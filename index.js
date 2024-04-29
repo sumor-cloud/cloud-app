@@ -1,8 +1,8 @@
-import demo from './src/demo.js'
+import app from './src/app/index.js'
 
 export {
-  demo
+  app
 }
 export default {
-  demo
+  app
 }
