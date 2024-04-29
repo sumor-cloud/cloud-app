@@ -62,6 +62,9 @@
     "src",
     "LICENSE",
     "index.js",
+    "root.js",
+    "cli.js",
+    "template",
     ".gitignore"
   ],
   "engines": {
