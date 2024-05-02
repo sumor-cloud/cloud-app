@@ -13,8 +13,6 @@ export default async () => {
   const pkgInfo = await fse.readJson(`${root}/package.json`)
   const version = pkgInfo.version || '0.0.0'
   cmdCover(version)
-  // console.log(`当前使用的轻呈云依赖库位于${root}`);
-  // console.log(`当前使用的轻呈云应用位于${process.cwd()}`);
 
   program
     .name('sumor')

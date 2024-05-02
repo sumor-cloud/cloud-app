@@ -20,7 +20,7 @@ export default (path, app, callback) => {
           files[i] = obj
         }
       }
-      Object.assign(req.sumor.data, files)
+      req.sumor.data = { ...req.params, ...req.query, ...req.body, ...files }
       next()
     }, callback)
   } else {
