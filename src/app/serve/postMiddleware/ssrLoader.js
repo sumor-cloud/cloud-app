@@ -29,7 +29,7 @@ export default async (app) => {
         ssrServerEntry = ssrServerEntry.render
       }
     } catch (e) {
-      app.logger.error('ssrServerEntry load failed', e.stack)
+      console.error('ssrServerEntry load failed', e.stack)
     }
 
     app.use('*', async (req, res) => {
