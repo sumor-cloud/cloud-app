@@ -3,7 +3,6 @@ import path from 'node:path'
 import serveStatic from 'serve-static'
 import fs from 'fs'
 import { pathToFileURL } from 'url'
-import logger from '../preMiddleware/logger.js'
 
 export default async (app) => {
   const exposeRoot = '/'
@@ -30,7 +29,7 @@ export default async (app) => {
         ssrServerEntry = ssrServerEntry.render
       }
     } catch (e) {
-      logger.error('ssrServerEntry load failed', e.stack)
+      app.logger.error('ssrServerEntry load failed', e.stack)
     }
 
     app.use('*', async (req, res) => {
