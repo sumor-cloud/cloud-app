@@ -1,18 +1,16 @@
 import root from '../../root.js'
-export default (context, version) => {
-  // 首字母大写
-  // const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-  // const mode = capitalize(context.mode);
+export default (version) => {
   console.log(`
-========================================================
+=================================================================
        =         
-    = === =      Sumor App Framework v${version}
+    = === =      Sumor Cloud Application v${version}
   = ======= =    
-    = === =      More Information: https://www.sumor.com
+    = === =      More Information: https://sumor.cloud
        =         
-       
-  当前使用的轻呈云依赖库位于${root}
-  当前使用的轻呈云应用位于${process.cwd()}
-========================================================
+=================================================================
+  SCA library is located at:
+    - ${root}
+  Application is located at:
+    - ${process.cwd()}
 `)
 }

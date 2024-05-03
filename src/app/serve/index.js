@@ -1,13 +1,11 @@
-import express from 'express'
+import createApp from '@sumor/ssl-server'
 import preMiddleware from './preMiddleware/index.js'
 import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
-import listen from './listen/index.js'
 
 export default async (context) => {
-  const app = express()
-  app.disable('x-powered-by')
-
+  const app = createApp()
+  app.logger = context.logger
   app.sumor = context
   app.sumor.app = app
   app.use((req, res, next) => {
@@ -30,7 +28,7 @@ export default async (context) => {
     next()
   })
 
-  app.sumor.logger.debug('前置中间件加载完成')
+  app.logger.debug('前置中间件加载完成')
 
   if (app.sumor.meta.event.setup) {
     await app.sumor.meta.event.setup.program(app.sumor)
@@ -42,7 +40,7 @@ export default async (context) => {
 
   await handler(app)
 
-  app.sumor.logger.debug('处理程序加载完成')
+  app.logger.debug('处理程序加载完成')
 
   if (app.sumor.meta.event.serve) {
     await app.sumor.meta.event.serve.program(app.sumor)
@@ -50,20 +48,20 @@ export default async (context) => {
 
   await postMiddleware(app)
 
-  app.sumor.logger.debug('后置中间件加载完成')
+  app.logger.debug('后置中间件加载完成')
 
-  await listen(app)
+  app.sumor.close = await app.listen(app.sumor.port)
 
   if (app.sumor.meta.event.served) {
     await app.sumor.meta.event.served.program(app.sumor)
   }
 
-  app.sumor.logger.info(`应用已运行在 ${app.sumor.origin}`)
+  app.logger.info(`应用已运行在 ${app.sumor.origin}`)
 
   if (app.sumor.mode === 'production') {
     process.on('uncaughtException', (err) => {
-      app.sumor.logger.error('未捕捉错误')
-      app.sumor.logger.error(err)
+      app.logger.error('未捕捉错误')
+      app.logger.error(err)
     })
   }
 }

@@ -1,4 +1,4 @@
-import getFormattedTime from './getFormattedTime'
+import getFormattedTime from './getFormattedTime.js'
 
 export default ({
   time, offset, level, scope, id

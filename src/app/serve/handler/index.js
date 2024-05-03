@@ -48,7 +48,7 @@ export default async (app) => {
       desc: app.sumor.meta.api[path].desc || '',
       parameters: app.sumor.meta.api[path].parameters || {}
     }
-    app.sumor.logger.info(`接口已就绪：${route}${hasFile ? ' (允许文件上传)' : ''}`)
+    app.logger.info(`接口已就绪：${route}${hasFile ? ' (允许文件上传)' : ''}`)
   }
-  app.sumor.logger.info('所有接口已就绪')
+  app.logger.info('所有接口已就绪')
 }
