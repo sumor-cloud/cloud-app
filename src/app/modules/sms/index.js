@@ -5,11 +5,7 @@ let smsClient
 export default class SMS {
   constructor (config, logger) {
     this._config = config
-    this._logger = logger || {
-      error: console.log,
-      debug: console.log,
-      trace: console.log
-    }
+    this._logger = logger
   }
 
   async send (templateCode, mobilePrefix, mobile, param) {
@@ -62,7 +58,8 @@ export default class SMS {
         throw error
       }
     } else {
-      this._logger.error(`消息发送功能不可用。需要发送消息${templateCode}给${mobilePrefix} ${mobile}，参数${JSON.stringify(param)}`)
+      this._logger.error('Message sending function is disabled, please check the configuration \'sms\'.')
+      this._logger.trace(`Need to send message ${templateCode} to ${mobilePrefix} ${mobile}, parameter ${JSON.stringify(param)}`)
     }
   }
 }
