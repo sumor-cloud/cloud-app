@@ -2,7 +2,8 @@ import { createPinia } from 'pinia'
 import { createSSRApp } from 'vue'
 import VueLazyload from 'vue-lazyload'
 import App from './App.vue'
-import { init } from '@sumor/ux'
+import init from '../../../web/ux/init.js'
+// import { init } from '@sumor/ux'
 import {
   createRouter,
   createMemoryHistory,
