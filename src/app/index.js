@@ -8,10 +8,6 @@ export default async (options) => {
   options = options || {}
 
   const context = await prepare(options)
-  context.logger.info(`日志记录级别：${context.logLevel.toUpperCase()}`)
-  context.logger.info(`运行模式：${context.mode.toUpperCase()}`)
-  context.logger.trace(`全局交互对象: ${Object.keys(context).join(', ')}`)
-  context.logger.trace(`配置信息: ${JSON.stringify(context.config, null, 4)}`)
 
   if (context.mode === 'development') {
     context.logger.info('开始准备开发环境')

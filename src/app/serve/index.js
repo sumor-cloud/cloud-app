@@ -57,11 +57,4 @@ export default async (context) => {
   }
 
   app.logger.info(`应用已运行在 ${app.sumor.origin}`)
-
-  if (app.sumor.mode === 'production') {
-    process.on('uncaughtException', (err) => {
-      app.logger.error('未捕捉错误')
-      app.logger.error(err)
-    })
-  }
 }

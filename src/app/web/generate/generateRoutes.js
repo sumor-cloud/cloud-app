@@ -1,5 +1,5 @@
 import loadConfig from '../../utils/loadConfig.js'
-import findFiles from '../../../utils/findFiles.js'
+import findFiles from './findFiles.js'
 import updateFile from '../../utils/updateFile.js'
 
 export default async (context, paths) => {

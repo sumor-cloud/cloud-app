@@ -49,5 +49,10 @@ export default async (options) => {
   // 加载接口
   await load(context)
 
+  context.logger.info(`日志记录级别：${context.logLevel.toUpperCase()}`)
+  context.logger.info(`运行模式：${context.mode.toUpperCase()}`)
+  context.logger.trace(`全局交互对象: ${Object.keys(context).join(', ')}`)
+  context.logger.trace(`配置信息: ${JSON.stringify(context.config, null, 4)}`)
+
   return context
 }
