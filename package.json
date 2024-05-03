@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@alicloud/sms-sdk": "^1.1.6",
-    "@sumor/ssl-server": "^1.0.18",
+    "@sumor/ssl-server": "^1.0.19",
     "@vitejs/plugin-vue": "^4.2.3",
     "ali-oss": "^6.20.0",
     "axios": "^1.4.0",
