@@ -191,16 +191,23 @@ class Token {
 
 export default async (app) => {
   app.use(async (req, res, next) => {
-    req.sumor.token = new Token(req)
-    if (app.sumor.meta.event.token) {
-      req.sumor.token.load = async () => {
-        await app.sumor.meta.event.token.program(req.sumor, req, res)
+    const apiPaths = Object.keys(app.sumor.meta.api)
+    const matched = apiPaths.filter((path) => {
+      return req.path === `/${path.replace(/\./g, '/')}`
+    }).length > 0
+    if (matched) {
+      req.sumor.token = new Token(req)
+      if (app.sumor.meta.event.token) {
+        req.sumor.token.load = async () => {
+          await app.sumor.meta.event.token.program(req.sumor, req, res)
+        }
+        await req.sumor.token.load()
       }
-      await req.sumor.token.load()
+      if (req.sumor.token.user && req.sumor.db) {
+        req.sumor.db.setUser(req.sumor.token.user)
+      }
     }
-    if (req.sumor.token.user && req.sumor.db) {
-      req.sumor.db.setUser(req.sumor.token.user)
-    }
+
     next()
   })
 }
