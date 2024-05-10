@@ -1,7 +1,6 @@
 import fse from 'fs-extra'
 import path from 'node:path'
 import serveStatic from 'serve-static'
-import fs from 'fs'
 import { pathToFileURL } from 'url'
 
 export default async (app) => {
@@ -24,12 +23,12 @@ export default async (app) => {
     let ssrServerEntry
     try {
       const ssrPath = path.resolve(webPath, './server/entry-server.js')
-      if (fs.existsSync(ssrPath)) {
-        ssrServerEntry = await import(pathToFileURL(ssrPath))
-        ssrServerEntry = ssrServerEntry.render
+      if (await fse.exists(ssrPath)) {
+        const { render } = await import(pathToFileURL(ssrPath))
+        ssrServerEntry = render
       }
     } catch (e) {
-      console.error('ssrServerEntry load failed', e.stack)
+      app.logger.error('ssrServerEntry load failed', e)
     }
 
     app.use('*', async (req, res) => {
