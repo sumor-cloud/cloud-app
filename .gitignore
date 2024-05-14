@@ -10,5 +10,4 @@ output/
 
 # runtime config
 ssl/
-
-config/
+test/config/
