@@ -1,4 +1,4 @@
-import type from '../../utils/type.js'
+import type from '../../../../utils/type.js'
 import uuid from '../../tools/uuid.js'
 import toCamelCase from '../utils/toCamelCase.js'
 import fromCamelCase from '../utils/fromCamelCase.js'

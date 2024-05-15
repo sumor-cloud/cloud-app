@@ -1,7 +1,7 @@
 import fse from 'fs-extra'
 import { pathToFileURL } from 'url'
 import formatter from './formatter.js'
-import loadFiles from '../utils/loadFiles.js'
+import loadFiles from '../../../utils/loadFiles.js'
 import { find } from '@sumor/config'
 
 import sumorText from './sumorObjects/text.js'
@@ -9,7 +9,7 @@ import sumorType from './sumorObjects/type.js'
 import sumorRange from './sumorObjects/range/index.js'
 import getSumorApi from './sumorObjects/api.js'
 import findFiles from '../../../utils/findFiles.js'
-import parseFileName from '../utils/parseFileName.js'
+import parseFileName from '../../../utils/parseFileName.js'
 
 export default async (context) => {
   const sumorApi = getSumorApi(context)

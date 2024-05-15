@@ -6,10 +6,7 @@ export default async (path, type, suffix) => {
   const files = {}
   if (await fse.exists(path)) {
     const condition = type ? `**/**.${type}.json` : '**/**.json'
-    const jsonList = await findFiles({
-      condition,
-      options: { cwd: path }
-    })
+    const jsonList = await findFiles(condition, { cwd: path })
     for (const item of jsonList) {
       const filePath = `${path}/${item}`
       const itemPath = parseFileName(item)
@@ -18,10 +15,7 @@ export default async (path, type, suffix) => {
 
     if (suffix && suffix !== 'json') {
       const condition = type ? `**/**.${type}.${suffix}` : `**/**.${suffix}`
-      const suffixList = await findFiles({
-        condition,
-        options: { cwd: path }
-      })
+      const suffixList = await findFiles(condition, { cwd: path })
       for (const item of suffixList) {
         const filePath = `${path}/${item}`
         const itemPath = parseFileName(item)
