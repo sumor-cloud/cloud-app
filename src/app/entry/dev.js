@@ -1,6 +1,6 @@
 import chokidar from 'chokidar'
 
-import singleThreadCaller from '../utils/singleThreadCaller.js'
+import singleThreadCaller from '../../utils/singleThreadCaller.js'
 
 import getWebConfig from '../web/index.js'
 import generate from '../web/generate/index.js'
