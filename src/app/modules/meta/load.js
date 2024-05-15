@@ -2,12 +2,13 @@ import fse from 'fs-extra'
 import { pathToFileURL } from 'url'
 import formatter from './formatter.js'
 import loadFiles from '../utils/loadFiles.js'
+import { find } from '@sumor/config'
 
 import sumorText from './sumorObjects/text.js'
 import sumorType from './sumorObjects/type.js'
 import sumorRange from './sumorObjects/range/index.js'
 import getSumorApi from './sumorObjects/api.js'
-import findFiles from '../utils/findFiles.js'
+import findFiles from '../../../utils/findFiles.js'
 import parseFileName from '../utils/parseFileName.js'
 
 export default async (context) => {
@@ -32,7 +33,14 @@ export default async (context) => {
     if (category === 'api' || category === 'event') {
       type = 'program'
     }
-    let files = await loadFiles(`${context.root}/${category}`, type)
+    let files = await find(`${context.root}/${category}`, type)
+    // change files key's slash to point
+    const newFiles = {}
+    for (const i in files) {
+      newFiles[i.replace(/\//g, '.')] = files[i]
+    }
+    files = newFiles
+
     if (category === 'api') {
       const newFiles = {}
       for (const i in files) {
@@ -57,17 +65,14 @@ export default async (context) => {
   }
   const viewSql = await loadFiles(`${context.root}/view`, 'view', 'sql')
   for (const i in viewSql) {
-    meta.view[i] = meta.api[i] || formatter.program({})
+    meta.view[i] = formatter.view(meta.view[i])
     meta.view[i] = Object.assign(meta.view[i], viewSql[i])
   }
 
   // 获取api程序对象文件
   const apiRootPath = `${context.root}/api`
   if (await fse.exists(apiRootPath)) {
-    const programList = await findFiles({
-      condition: '**/**.js',
-      options: { cwd: apiRootPath }
-    })
+    const programList = await findFiles('**/**.js', { cwd: apiRootPath })
     for (const item of programList) {
       const itemPath = parseFileName(item)
       const route = `api.${itemPath.path}`
@@ -79,10 +84,7 @@ export default async (context) => {
   // 获取event程序对象文件
   const eventRootPath = `${context.root}/event`
   if (await fse.exists(eventRootPath)) {
-    const programList = await findFiles({
-      condition: '**/**.js',
-      options: { cwd: eventRootPath }
-    })
+    const programList = await findFiles('**/**.js', { cwd: eventRootPath })
     for (const item of programList) {
       const itemPath = parseFileName(item)
       const route = itemPath.path

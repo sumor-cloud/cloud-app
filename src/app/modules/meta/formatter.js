@@ -66,10 +66,18 @@ const program = (data, context) => {
   }
   return data
 }
+const view = (data) => {
+  data = data || {}
+  data.name = data.name || ''
+  data.desc = data.desc || ''
+  data.sql = data.sql || ''
+  return data
+}
 export default {
   text,
   rule,
   type,
   entity,
-  program
+  program,
+  view
 }

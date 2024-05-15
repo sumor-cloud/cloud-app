@@ -2,7 +2,7 @@ import sortObject from './sortObject.js'
 import parseViews from './parseViews.js'
 import find from './find.js'
 import calcRank from './calcRank.js'
-import fromCamelCase from '../../utils/fromCamelCaseData.js'
+import fromCamelCase from '../../utils/fromCamelCase.js'
 import toCamelCase from '../../utils/toCamelCase.js'
 
 export default (views, desc) => {

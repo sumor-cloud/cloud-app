@@ -1,11 +1,7 @@
-import loadConfig from '../utils/loadConfig.js'
+import { load } from '@sumor/config'
 
 export default async (context) => {
-  const staticConfigPath = `${context.root}/sumor`
-  const staticConfig = await loadConfig(staticConfigPath, context.mode === 'production')
-
-  const configPath = `${context.root}/config/config`
-  const config = await loadConfig(configPath, context.mode === 'production')
-
+  const staticConfig = await load(context.root, 'sumor')
+  const config = await load(`${context.root}/config`, 'config')
   return { ...staticConfig, ...config }
 }

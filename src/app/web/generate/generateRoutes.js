@@ -1,17 +1,12 @@
-import loadConfig from '../../utils/loadConfig.js'
-import findFiles from './findFiles.js'
-import updateFile from '../../utils/updateFile.js'
+import { findReference } from '@sumor/config'
+import updateFile from '../../../utils/updateFile.js'
 
 export default async (context, paths) => {
-  const pages = await findFiles('**/*.vue', { cwd: paths.pages })
   const pageRouteStrings = []
-  for (const i in pages) {
-    const page = pages[i]
-    const absolutePath = (`${paths.pages}/${page}`).replace(/\\/g, '/')
-    const metaPath = absolutePath.replace('.vue', '')
+  const pages = await findReference(paths.pages, ['vue'])
+  for (const page in pages) {
     const relPath = (`../../web/pages/${page}`).replace(/\\/g, '/')
-
-    const meta = await loadConfig(metaPath, context.mode === 'production')
+    const meta = pages[page]
     let subPath = (`/${page}`).replace(paths.pages, '').replace('.vue', '').replace(/\\/g, '/').toLowerCase()
       .replace('/index', '')
     if (subPath === '') {
@@ -37,6 +32,7 @@ export default async (context, paths) => {
 }`)
     }
   }
+
   const pagesConfig = context.config.pages || []
   for (const page of pagesConfig) {
     if (page.redirect) {
