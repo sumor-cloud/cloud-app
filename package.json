@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@sumor/config": "^1.1.0",
-    "@sumor/logger": "^1.0.0",
+    "@sumor/logger": "^1.1.0",
     "@alicloud/sms-sdk": "^1.1.6",
     "@sumor/ssl-server": "^1.0.19",
     "@vitejs/plugin-vue": "^4.2.3",
