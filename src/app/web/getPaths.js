@@ -1,7 +1,7 @@
 import path from 'path'
 import fse from 'fs-extra'
 
-export default async (context) => {
+export default async context => {
   const root = context.root
   const paths = {
     root,

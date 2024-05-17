@@ -21,7 +21,7 @@ const imageOptionsMeta = {
     size: 's'
   }
 }
-const parseOptions = (options) => {
+const parseOptions = options => {
   const optionsData = {}
   if (options.image) {
     const items = []
@@ -105,7 +105,7 @@ class AliyunOSS {
       throw err
     }
     const origin = JSON.parse(response.content.toString())
-    const getInfo = (name) => {
+    const getInfo = name => {
       if (origin[name]) {
         return origin[name].value
       }

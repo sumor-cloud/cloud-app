@@ -1,7 +1,7 @@
 import WeChat from '../../modules/wechat/index.js'
 import getCache from '../../modules/cache/index.js'
 
-export default async (app) => {
+export default async app => {
   if (app.sumor.config.wechat) {
     const logger = app.sumor.getLogger('WECHAT')
     logger.debug('微信服务器正在启动')

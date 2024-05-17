@@ -1,6 +1,6 @@
 import fse from 'fs-extra'
 
-export default (app) => {
+export default app => {
   app.use(async (req, res, next) => {
     if (req.files) {
       const uploadPath = `${app.sumor.root}/tmp/uploads`

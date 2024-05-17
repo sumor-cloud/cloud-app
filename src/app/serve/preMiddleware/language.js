@@ -1,4 +1,4 @@
-export default (app) => {
+export default app => {
   app.use((req, res, next) => {
     const acceptLanguage = req.get('accept-language') || app.sumor.language
     const languageList = acceptLanguage.split(',')

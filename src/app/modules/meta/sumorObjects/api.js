@@ -1,6 +1,6 @@
 import wxPay from './apis/wx/pay.js'
 
-export default (context) => {
+export default context => {
   const sumorApis = {
     monitor: {
       name: '服务健康状态监控',

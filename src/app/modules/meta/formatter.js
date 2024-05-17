@@ -1,4 +1,4 @@
-const text = (data) => {
+const text = data => {
   data = data || {}
   data.name = data.name || ''
   data.desc = data.desc || ''
@@ -6,7 +6,7 @@ const text = (data) => {
   data.target = data.target || {}
   return data
 }
-const rule = (data) => {
+const rule = data => {
   data = data || {}
   data.name = data.name || ''
   data.desc = data.desc || ''
@@ -14,7 +14,7 @@ const rule = (data) => {
   data.expression = data.expression || ''
   return data
 }
-const type = (data) => {
+const type = data => {
   data = data || {}
   data.name = data.name || ''
   data.desc = data.desc || ''
@@ -66,7 +66,7 @@ const program = (data, context) => {
   }
   return data
 }
-const view = (data) => {
+const view = data => {
   data = data || {}
   data.name = data.name || ''
   data.desc = data.desc || ''

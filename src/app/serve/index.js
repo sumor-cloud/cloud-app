@@ -3,7 +3,7 @@ import preMiddleware from './preMiddleware/index.js'
 import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 
-export default async (context) => {
+export default async context => {
   const app = createApp()
   app.logger = context.logger
   app.sumor = context

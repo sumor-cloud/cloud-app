@@ -1,6 +1,6 @@
 import varStyle from './varStyle.js'
 
-export default (style) => {
+export default style => {
   const customStyle = varStyle(style)
   return {
     preprocessorOptions: {

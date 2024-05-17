@@ -3,7 +3,7 @@ import zlib from 'zlib'
 import serveStatic from 'serve-static'
 import fse from 'fs-extra'
 
-export default async (app) => {
+export default async app => {
   const path = `${app.sumor.root}/static`
 
   // 压缩开放文件

@@ -1,6 +1,6 @@
 import Storage from '../../modules/storage/index.js'
 
-export default async (app) => {
+export default async app => {
   const logger = app.sumor.getLogger('STORAGE')
   app.sumor.storage = new Storage(app.sumor.config.storage, logger)
   app.use((req, res, next) => {

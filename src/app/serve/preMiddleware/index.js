@@ -15,7 +15,7 @@ import storage from './storage.js'
 import sms from './sms.js'
 import wechat from './wechat.js'
 
-export default async (app) => {
+export default async app => {
   await loadInstance(app)
   await loadResponse(app)
   await language(app)

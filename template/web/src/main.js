@@ -24,7 +24,7 @@ export async function createApp() {
   })
   app.use(router)
   app.use(VueLazyload)
-  app.config.globalProperties.$store = (name) => {
+  app.config.globalProperties.$store = name => {
     return stores[name]()
   }
   app.config.globalProperties.$env = env

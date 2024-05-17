@@ -1,7 +1,7 @@
 const startTime = Date.now() / 1000
 const startHRTime = process.hrtime.bigint()
 
-export default (precision) => {
+export default precision => {
   precision = precision || 's'
   const ns = Number(process.hrtime.bigint() - startHRTime)
   let us = ns / 1000

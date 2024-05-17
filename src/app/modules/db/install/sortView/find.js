@@ -1,4 +1,4 @@
-export default (views) => {
+export default views => {
   const whereUsed = {}
   for (const i in views) {
     whereUsed[i] = []

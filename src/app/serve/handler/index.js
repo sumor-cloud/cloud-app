@@ -1,7 +1,7 @@
 import listenApis from './listenApis.js'
 import checkData from './checkData.js'
 
-export default async (app) => {
+export default async app => {
   // 暴露接口
   const apiPaths = Object.keys(app.sumor.meta.api)
   apiPaths.sort((x, y) => (x > y ? 1 : -1))

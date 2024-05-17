@@ -8,7 +8,7 @@ export default async (config, logger) => {
   if (type === 'redis') {
     // todo add redis type cache store
     const tmpCache = {}
-    getCacheMethods = (logger) => ({
+    getCacheMethods = logger => ({
       get: async (namespace, key) => {
         const store = tmpCache[namespace] || {}
         return store[key]
@@ -36,7 +36,7 @@ export default async (config, logger) => {
       config,
       logger
     })
-    getCacheMethods = (logger) => ({
+    getCacheMethods = logger => ({
       get: async (namespace, key) => {
         const db = await pool.connect(logger)
         const result = await db.single('cache', { namespace, key })

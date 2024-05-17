@@ -4,7 +4,7 @@ import serve from './serve/index.js'
 import build from './entry/build.js'
 import setup from './entry/setup.js'
 
-export default async (options) => {
+export default async options => {
   options = options || {}
 
   const context = await prepare(options)

@@ -4,7 +4,7 @@ import fs from 'fs'
 import axios from 'axios'
 import { hextob64, KJUR } from 'jsrsasign'
 
-export default (config) => {
+export default config => {
   const privateKeyPath = `${process.cwd()}/${config.pay.privateKey}`
   const entryPoint = 'https://api.mch.weixin.qq.com'
   const privateKey = fs.readFileSync(privateKeyPath, 'utf8')
@@ -23,7 +23,7 @@ export default (config) => {
     return hextob64(signData)
   }
 
-  const call = async (payload) => {
+  const call = async payload => {
     const timestamp = Math.floor(Date.now() / 1000)
     const nonceStr = Math.random().toString(36).substr(2, 15)
 

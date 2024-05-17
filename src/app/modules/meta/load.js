@@ -11,7 +11,7 @@ import getSumorApi from './sumorObjects/api.js'
 import findFiles from '../../../utils/findFiles.js'
 import parseFileName from '../../../utils/parseFileName.js'
 
-export default async (context) => {
+export default async context => {
   const sumorApi = getSumorApi(context)
   const sumorApiInfo = {}
   for (const i in sumorApi) {
@@ -90,7 +90,7 @@ export default async (context) => {
       const route = itemPath.path
       const filePath = `${eventRootPath}/${item}`
       meta.event[route] = meta.event[route] || {}
-      meta.event[route].program = async (context) => {
+      meta.event[route].program = async context => {
         context.logger.trace(`正在执行事件${route}`)
         let newContext = { ...context }
         let standaloneDB

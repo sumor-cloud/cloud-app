@@ -7,11 +7,11 @@ const serverUpTime = (Math.floor(Date.now() / 1000) - os.uptime()) * 1000
 const serviceUpTime = Date.now()
 
 // const round = (x) => Math.round(x * 100) / 100;
-const round = (x) => Math.round(x)
+const round = x => Math.round(x)
 const getMemory = () => round(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)
 const getIdleStatus = () => ({
   time: Date.now(),
-  idle: os.cpus().map((cpu) => cpu.times.idle)
+  idle: os.cpus().map(cpu => cpu.times.idle)
 })
 const compare = (t1, t2) => {
   const diff = t2.time - t1.time
@@ -49,7 +49,7 @@ const update = async () => {
   data.memory = data.memory.slice(0, keep)
 }
 
-export default async (app) => {
+export default async app => {
   update()
   setInterval(() => {
     update()

@@ -24,7 +24,7 @@ export default class SMS {
           }
           break
         default:
-          await new Promise((resolve) => {
+          await new Promise(resolve => {
             setTimeout(() => {
               resolve()
             }, 1000)
@@ -42,7 +42,7 @@ export default class SMS {
               TemplateParam: JSON.stringify(param)
             })
             .then(
-              (res) => {
+              res => {
                 const { Code } = res
                 if (Code === 'OK') {
                   resolve()
@@ -50,7 +50,7 @@ export default class SMS {
                   reject(Code)
                 }
               },
-              (err) => {
+              err => {
                 if (err.data) {
                   reject(err.data.Code)
                 } else {

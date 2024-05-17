@@ -1,4 +1,4 @@
-export default (code) => {
+export default code => {
   const chars = '0123456789abcdefghigklmnopqrstuvwxyz'
   const radix = chars.length
   code = String(code)

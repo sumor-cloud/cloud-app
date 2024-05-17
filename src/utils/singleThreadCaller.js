@@ -1,4 +1,4 @@
-export default (cb) => {
+export default cb => {
   const status = {
     running: false,
     next: false
@@ -10,7 +10,7 @@ export default (cb) => {
     }
     status.running = true
     await cb(...args)
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       setTimeout(resolve, 500)
     })
     status.running = false

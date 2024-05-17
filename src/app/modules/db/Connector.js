@@ -28,7 +28,7 @@ export default class Connector {
         delete baseConfig.database
         mysqlChecker = knex(parseConfig(baseConfig))
         schemaResult = await mysqlChecker.raw('show databases')
-        existSchema = !!schemaResult[0].filter((obj) => obj.Database === database)[0]
+        existSchema = !!schemaResult[0].filter(obj => obj.Database === database)[0]
         if (!existSchema) {
           this._logger.trace('数据库不存在，正在创建')
           await mysqlChecker.raw(
@@ -36,7 +36,7 @@ export default class Connector {
           )
           this._logger.trace('数据库创建完成')
         }
-        await new Promise((resolve) => {
+        await new Promise(resolve => {
           mysqlChecker.destroy(() => {
             resolve()
           })
@@ -56,7 +56,7 @@ export default class Connector {
 
   async destroy() {
     if (this.knex) {
-      await new Promise((resolve) => {
+      await new Promise(resolve => {
         this.knex.destroy(() => {
           resolve()
         })

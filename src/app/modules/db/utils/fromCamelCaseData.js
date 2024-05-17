@@ -1,6 +1,6 @@
 import fromCamelCase from './fromCamelCase.js'
 
-export default (data) => {
+export default data => {
   const result = {}
   for (const i in data) {
     const fieldName = fromCamelCase(i, '_')

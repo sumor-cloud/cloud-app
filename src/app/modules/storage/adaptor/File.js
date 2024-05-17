@@ -14,7 +14,7 @@ class File {
   async put(target, stream) {
     const targetPath = this._getTargetPath(target)
     fse.ensureFileSync(targetPath)
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       const ws = fse.createWriteStream(targetPath, { encoding: 'utf8', start: 0 })
       stream.pipe(ws)
       stream.on('end', () => {

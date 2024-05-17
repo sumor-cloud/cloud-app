@@ -1,6 +1,6 @@
-export default (depends) => {
+export default depends => {
   const index = {}
-  const checkIndex = (name) => {
+  const checkIndex = name => {
     if (depends[name].length === 0) {
       return 1
     }

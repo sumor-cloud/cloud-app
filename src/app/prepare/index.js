@@ -6,7 +6,7 @@ import prepareLogger from './prepareLogger.js'
 import prepareDatabase from './prepareDatabase.js'
 import load from '../modules/meta/load.js'
 
-export default async (options) => {
+export default async options => {
   const context = prepareContext(options)
 
   // 获取配置信息

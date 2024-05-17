@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser'
 
-export default (app) => {
+export default app => {
   // 解析cookie到req.cookies
   app.use(cookieParser())
   app.use((req, res, next) => {

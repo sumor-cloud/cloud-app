@@ -1,6 +1,6 @@
 import Logger from '@sumor/logger'
 
-export default async (context) => {
+export default async context => {
   return (scope, id) =>
     new Logger({
       scope,

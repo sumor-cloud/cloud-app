@@ -2,11 +2,11 @@ import bodyParser from 'body-parser'
 import multer from 'multer'
 import fse from 'fs-extra'
 
-export default async (app) => {
+export default async app => {
   const uploadPath = `${app.sumor.root}/tmp/uploads`
   await fse.ensureDir(uploadPath)
   const upload = multer({ dest: 'tmp/uploads/' })
-  app.uploader = (parameters) => {
+  app.uploader = parameters => {
     let uploadFunction
     if (parameters) {
       const fileFields = []

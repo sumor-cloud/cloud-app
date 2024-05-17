@@ -195,11 +195,11 @@ class Token {
   }
 }
 
-export default async (app) => {
+export default async app => {
   app.use(async (req, res, next) => {
     const apiPaths = Object.keys(app.sumor.meta.api)
     const matched =
-      apiPaths.filter((path) => {
+      apiPaths.filter(path => {
         return req.path === `/${path.replace(/\./g, '/')}`
       }).length > 0
     if (matched) {

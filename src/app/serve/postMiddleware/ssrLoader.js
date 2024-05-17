@@ -3,7 +3,7 @@ import path from 'node:path'
 import serveStatic from 'serve-static'
 import { pathToFileURL } from 'url'
 
-export default async (app) => {
+export default async app => {
   const exposeRoot = '/'
   const webPath = path.resolve(process.cwd(), './output/web')
   if (await fse.exists(webPath)) {

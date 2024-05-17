@@ -1,6 +1,6 @@
 import stream from 'stream'
 
-const toStream = (source) => {
+const toStream = source => {
   let result = source
   let buffer
   if (typeof source === 'string') {

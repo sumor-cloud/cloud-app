@@ -20,7 +20,7 @@ const getVar = (data, alias) => {
   return { scss, less }
 }
 
-export default (vars) => {
+export default vars => {
   vars = defaultValue(vars)
   return getVar(vars, alias)
 }

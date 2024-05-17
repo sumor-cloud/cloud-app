@@ -1,11 +1,11 @@
 let requestSequence = 0
 
-export default (app) => {
+export default app => {
   app.use((req, res, next) => {
     const current = ++requestSequence
 
     req.sumor.ip = req.headers['x-forwarded-for'] || '0.0.0.0'
-    req.sumor.getLogger = (scope) => app.sumor.getLogger(scope, current)
+    req.sumor.getLogger = scope => app.sumor.getLogger(scope, current)
 
     req.sumor.logger = req.sumor.getLogger('PROGRAM')
 

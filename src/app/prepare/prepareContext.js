@@ -1,4 +1,4 @@
-export default (options) => {
+export default options => {
   const context = {}
   const middlewares = {}
   context.setContext = (key, value) => {

@@ -68,7 +68,7 @@ const getText = (texts, defaultLanguage) => (key, data, language) => {
   return matchParameters(result, data)
 }
 
-export default async (app) => {
+export default async app => {
   const text = {}
   for (const namespace in app.sumor.meta.text) {
     text[namespace] = text[namespace] || {}

@@ -1,5 +1,5 @@
 import root from '../../root.js'
-export default (version) => {
+export default version => {
   console.log(`
 =================================================================
        =         

@@ -28,7 +28,7 @@ export default async ({ config, logger, entity, view }) => {
     for (const i in sortedView) {
       const objName = fromCamelCase(i, '_')
       logger.debug(`正在安装视图${i}为${objName}`)
-      await trx.schema.createViewOrReplace(objName, (view) => {
+      await trx.schema.createViewOrReplace(objName, view => {
         view.as(sortedView[i].sql)
       })
       logger.debug(`正在安装视图${i}完成`)

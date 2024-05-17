@@ -39,7 +39,7 @@ export default async (trx, tableName, info) => {
   if (!exists) {
     if (!info.rename && !info.deleted) {
       await trx.schema
-        .createTable(tableName, (table) => {
+        .createTable(tableName, table => {
           for (const name in property) {
             const columnName = fromCamelCase(name, '_')
             const propertyInfo = property[name]
@@ -58,7 +58,7 @@ export default async (trx, tableName, info) => {
   } else {
     let info = await trx(tableName).columnInfo()
     await trx.schema
-      .alterTable(tableName, (table) => {
+      .alterTable(tableName, table => {
         for (const name in property) {
           const columnName = fromCamelCase(name, '_')
           const propertyInfo = property[name]
@@ -70,7 +70,7 @@ export default async (trx, tableName, info) => {
       })
       .transacting(trx)
     info = await trx(tableName).columnInfo()
-    await trx.schema.alterTable(tableName, (table) => {
+    await trx.schema.alterTable(tableName, table => {
       for (const name in property) {
         const columnName = fromCamelCase(name, '_')
         const propertyInfo = property[name]

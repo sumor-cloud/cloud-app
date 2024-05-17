@@ -1,4 +1,4 @@
-export default async (context) => {
+export default async context => {
   const domain = context.config.domain || 'localhost'
   const port = parseInt(context.config.port || '443', 10)
   const portString = port === 443 ? '' : `:${port}`

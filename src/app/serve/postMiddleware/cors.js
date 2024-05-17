@@ -1,4 +1,4 @@
-export default (app) => {
+export default app => {
   app.use((req, res, next) => {
     if (req.sumor.cors) {
       res.header('Access-Control-Allow-Origin', '*')

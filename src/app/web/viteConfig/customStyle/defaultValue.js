@@ -1,4 +1,4 @@
-export default (vars) => {
+export default vars => {
   const defaultVars = {
     'color-blue': '#50a1ff',
     'color-indigo': '#6610f2',

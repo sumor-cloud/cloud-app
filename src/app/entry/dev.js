@@ -7,11 +7,11 @@ import generate from '../web/generate/index.js'
 
 import { createServer, defineConfig } from 'vite'
 
-export default async (context) => {
+export default async context => {
   const { getLogger, root } = context
   const logger = getLogger('DEV')
 
-  const watch = singleThreadCaller(async (force) => {
+  const watch = singleThreadCaller(async force => {
     await generate(context, force)
     logger.info('代码已更新')
   })

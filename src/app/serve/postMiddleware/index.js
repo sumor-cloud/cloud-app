@@ -5,7 +5,7 @@ import sendResponse from './sendResponse.js'
 import ssrLoader from './ssrLoader.js'
 import staticParser from './staticParser.js'
 
-export default async (app) => {
+export default async app => {
   await cors(app)
   await fileClearUp(app)
   await sendResponse(app)
@@ -19,7 +19,7 @@ export default async (app) => {
         changeOrigin: true,
         ws: true,
         logProvider: function logProvider(provider) {
-          const dummyLogger = (arg1) => {
+          const dummyLogger = arg1 => {
             // console.log("proxy",arg1);
           }
           return {

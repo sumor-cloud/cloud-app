@@ -17,7 +17,7 @@ export default (report, connector, cache, logger, user) => {
     }
   }
 
-  methods.setUser = (val) => {
+  methods.setUser = val => {
     user = val
     logger.trace(`已修改操作用户为${val}`)
   }
@@ -154,7 +154,7 @@ export default (report, connector, cache, logger, user) => {
 
     let field = options.field
     if (field) {
-      field = field.map((obj) => fromCamelCase(obj, '_'))
+      field = field.map(obj => fromCamelCase(obj, '_'))
     }
     sql.select(field)
 
@@ -228,7 +228,7 @@ export default (report, connector, cache, logger, user) => {
     logger.trace(sql.toSQL().sql, sql.toSQL().bindings)
 
     const result = await sql
-    return result.map((obj) => toCamelCaseData(obj))
+    return result.map(obj => toCamelCaseData(obj))
   }
 
   methods.insert = async (table, data) => {

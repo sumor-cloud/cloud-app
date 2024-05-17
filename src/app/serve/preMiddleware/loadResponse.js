@@ -179,7 +179,7 @@ class Response {
   }
 }
 
-export default async (app) => {
+export default async app => {
   app.use((req, res, next) => {
     req.sumor.response = new Response(req, res)
     next()

@@ -1,4 +1,4 @@
-export default (info) => {
+export default info => {
   const length = info.length
   const type = info.type
 

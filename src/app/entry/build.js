@@ -2,7 +2,7 @@ import getWebViteConfig from '../web/index.js'
 import generate from '../web/generate/index.js'
 import { build, defineConfig } from 'vite'
 
-export default async (context) => {
+export default async context => {
   await generate(context, true)
 
   // 构建客户端

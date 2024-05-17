@@ -1,5 +1,5 @@
-export default async (app) => {
-  app.sumor.range = (name) => {
+export default async app => {
+  app.sumor.range = name => {
     if (name) {
       return app.sumor.meta.range[name]
     }

@@ -1,4 +1,4 @@
-export default (path) => {
+export default path => {
   const pathArr = path.split('/')
   const fileName = pathArr.pop()
   const fileNameArr = fileName.split('.')

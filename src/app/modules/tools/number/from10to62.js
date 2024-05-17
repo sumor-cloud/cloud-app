@@ -1,4 +1,4 @@
-export default (number) => {
+export default number => {
   const chars = '0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ'.split('')
   const radix = chars.length
   let qutient = +number
