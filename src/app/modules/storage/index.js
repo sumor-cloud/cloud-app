@@ -6,7 +6,7 @@ import fromStream from './fromStream.js'
 import getStreamMeta from './getStreamMeta.js'
 
 export default class Storage {
-  constructor (config, logger) {
+  constructor(config, logger) {
     this._logger = logger
     if (config) {
       switch (config.type) {
@@ -22,7 +22,7 @@ export default class Storage {
     }
   }
 
-  async put (target, data) {
+  async put(target, data) {
     data = toStream(data)
     if (this._instance) {
       try {
@@ -38,7 +38,7 @@ export default class Storage {
     }
   }
 
-  async get (target, options) {
+  async get(target, options) {
     options = options || {}
     if (this._instance) {
       try {
@@ -52,7 +52,7 @@ export default class Storage {
     }
   }
 
-  async delete (target) {
+  async delete(target) {
     if (this._instance) {
       try {
         return await this._instance.delete(target)
@@ -64,7 +64,7 @@ export default class Storage {
     }
   }
 
-  async info (target, options) {
+  async info(target, options) {
     if (this._instance) {
       try {
         return await this._instance.info(target, options)
@@ -76,7 +76,7 @@ export default class Storage {
     }
   }
 
-  async exists (target) {
+  async exists(target) {
     if (this._instance) {
       try {
         return await this._instance.exists(target)

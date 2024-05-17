@@ -8,13 +8,13 @@
   </Frame>
 </template>
 <script>
-import Frame from "../../../web/Frame.vue";
+import Frame from '../../../web/Frame.vue'
 export default {
   components: {
     Frame
   }
-};
+}
 </script>
 <style lang="scss">
-@import "style";
+@import 'style';
 </style>

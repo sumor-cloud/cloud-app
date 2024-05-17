@@ -12,7 +12,9 @@ export default async ({ config, logger }) => {
   }
   setInterval(() => {
     if (report.workingConnections > report.alertConnections) {
-      console.log(`数据库连接过多，请检查是否有未提交的事务，当前连接数${report.workingConnections}`)
+      console.log(
+        `数据库连接过多，请检查是否有未提交的事务，当前连接数${report.workingConnections}`
+      )
     } else {
       // console.log(`当前数据库连接数${workingConnections}`);
     }

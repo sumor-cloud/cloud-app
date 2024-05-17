@@ -1,6 +1,4 @@
-const getHtmlResponse = ({
-  title, code, desc, data
-}) => {
+const getHtmlResponse = ({ title, code, desc, data }) => {
   const dataString = JSON.stringify(data, null, 4)
   return `<html>
 <head>
@@ -75,7 +73,7 @@ function show(){
 }
 
 class Response {
-  constructor (req, res) {
+  constructor(req, res) {
     this.req = req
     this.res = res
     this.respond = false
@@ -86,7 +84,7 @@ class Response {
     this._data = null
   }
 
-  set code (val) {
+  set code(val) {
     const _message = this.req.sumor.text(val, this._data)
     if (val && _message) {
       this._code = val
@@ -97,41 +95,41 @@ class Response {
     }
   }
 
-  get code () {
+  get code() {
     return this._code
   }
 
-  set message (val) {
+  set message(val) {
     this._message = val
   }
 
-  get message () {
+  get message() {
     return this._message
   }
 
-  set data (val) {
+  set data(val) {
     this._data = val
     this._changed = true
   }
 
-  get data () {
+  get data() {
     return this._data
   }
 
-  set changed (val) {
+  set changed(val) {
     this._changed = val
   }
 
-  get changed () {
+  get changed() {
     return this._changed
   }
 
-  error (code) {
+  error(code) {
     this.code = code
     this._hasError = true
   }
 
-  end () {
+  end() {
     if (this._data !== undefined) {
       try {
         this.res.send(this._data)
@@ -143,7 +141,7 @@ class Response {
     }
   }
 
-  send () {
+  send() {
     const result = {
       code: this._code,
       message: this._message,
@@ -163,10 +161,12 @@ class Response {
         this.res.status(500)
         const accept = this.req.accepts(['html', 'json'])
         if (accept === 'html') {
-          this.res.send(getHtmlResponse({
-            title: '服务异常，请稍后再试',
-            ...result
-          }))
+          this.res.send(
+            getHtmlResponse({
+              title: '服务异常，请稍后再试',
+              ...result
+            })
+          )
         } else {
           this.res.send(result)
         }

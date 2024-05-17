@@ -102,10 +102,14 @@ export default async (context) => {
         if (program) {
           try {
             await program(newContext || context)
-            if (standaloneDB) { await standaloneDB.commit() }
+            if (standaloneDB) {
+              await standaloneDB.commit()
+            }
             context.logger.debug(`事件${route}完成`)
           } catch (e) {
-            if (standaloneDB) { await standaloneDB.rollback() }
+            if (standaloneDB) {
+              await standaloneDB.rollback()
+            }
             context.logger.error(`事件${route}执行失败，${e.message}`)
             context.logger.trace(e)
           }

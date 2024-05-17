@@ -12,9 +12,7 @@ const pkgInfo = await fse.readJson(`${root}/package.json`)
 const version = pkgInfo.version || '0.0.0'
 cmdCover(version)
 
-program
-  .name('sumor')
-  .version(version || '0.0.0', '-v, --version')
+program.name('sumor').version(version || '0.0.0', '-v, --version')
 
 program
   .command('dev')

@@ -3,7 +3,7 @@ import wechatPay from './pay/index.js'
 
 const refreshTime = 30 * 60 * 1000
 export default class WeChat {
-  constructor (config, cache, logger) {
+  constructor(config, cache, logger) {
     this._config = config
     this._cache = cache
     this._name = config.name || ''
@@ -12,23 +12,23 @@ export default class WeChat {
 
     if (config.pay) {
       this.pay = {
-        order (params) {
+        order(params) {
           return wechatPay.order(params, config)
         },
-        close (params) {
+        close(params) {
           return wechatPay.close(params, config)
         },
-        check (params) {
+        check(params) {
           return wechatPay.check(params, config)
         },
-        sign (params) {
+        sign(params) {
           return wechatPay.sign(params, config)
         }
       }
     }
   }
 
-  async call (url, data) {
+  async call(url, data) {
     let result
     try {
       if (data) {
@@ -50,7 +50,7 @@ export default class WeChat {
     throw err
   }
 
-  async init (app) {
+  async init(app) {
     this._app = app
     this._logger.info(`微信校验文件已启动 /MP_verify_${this._config.verifyCode}.txt`)
     app.get(`/MP_verify_${this._config.verifyCode}.txt`, (req, res) => {
@@ -65,7 +65,7 @@ export default class WeChat {
     }, 60 * 1000)
   }
 
-  async getToken () {
+  async getToken() {
     const getTokenFromCache = async () => {
       let token = await this._cache.get('wechatAccessToken', this._name)
       if (token) {
@@ -87,7 +87,7 @@ export default class WeChat {
     return token.token
   }
 
-  async reloadUsers () {
+  async reloadUsers() {
     let next = ''
     let total
     let current = 0
@@ -114,14 +114,14 @@ export default class WeChat {
     return result
   }
 
-  async list (next) {
+  async list(next) {
     next = next || ''
     const token = await this.getToken()
     const url = `https://api.weixin.qq.com/cgi-bin/user/get?access_token=${token}&next_openid=${next}`
     return await this.call(url)
   }
 
-  async detail (openid) {
+  async detail(openid) {
     const token = await this.getToken()
     const url = `https://api.weixin.qq.com/cgi-bin/user/info?access_token=${token}&openid=${openid}`
     return await this.call(url)
@@ -136,7 +136,7 @@ export default class WeChat {
   //     const url = `https://api.weixin.qq.com/sns/userinfo?access_token=${token}&openid=${openid}&lang=zh_CN`;
   //     return await this.call(url);
   // }
-  async sendTemplateMessage (openId, templateId, url, data) {
+  async sendTemplateMessage(openId, templateId, url, data) {
     const token = await this.getToken()
     const dataStyle = {}
     for (const i in data) {
@@ -152,19 +152,23 @@ export default class WeChat {
         url,
         data: dataStyle
       })
-      this._logger.debug(`模版消息已发送给${openId}，模版${templateId}，数据${JSON.stringify(data)}`)
+      this._logger.debug(
+        `模版消息已发送给${openId}，模版${templateId}，数据${JSON.stringify(data)}`
+      )
     } catch (e) {
-      this._logger.error(`给${openId}的模版消息发送失败，模版${templateId}，数据${JSON.stringify(data)}`)
+      this._logger.error(
+        `给${openId}的模版消息发送失败，模版${templateId}，数据${JSON.stringify(data)}`
+      )
       this._logger.error(e)
     }
   }
 
-  async updateMenu (data) {
+  async updateMenu(data) {
     const token = await this.getToken()
     await this.call(`https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${token}`, data)
   }
 
-  async _refreshToken () {
+  async _refreshToken() {
     if (!this._updatingToken) {
       this._updatingToken = true
       this._logger.info('正在更新微信服务授权凭证')

@@ -3,12 +3,12 @@ import SMSClient from '@alicloud/sms-sdk'
 let smsClient
 
 export default class SMS {
-  constructor (config, logger) {
+  constructor(config, logger) {
     this._config = config
     this._logger = logger
   }
 
-  async send (templateCode, mobilePrefix, mobile, param) {
+  async send(templateCode, mobilePrefix, mobile, param) {
     const { signName, accessKeyId, secretAccessKey } = this._config
     if (this._config && !this._config.disable) {
       if (!smsClient) {
@@ -17,7 +17,9 @@ export default class SMS {
 
       switch (mobilePrefix) {
         case 86:
-          if (!mobile.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)) {
+          if (
+            !mobile.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)
+          ) {
             throw new Error('sumorSMS.MOBILE_FORMAT')
           }
           break
@@ -32,25 +34,30 @@ export default class SMS {
 
       try {
         await new Promise((resolve, reject) => {
-          smsClient.sendSMS({
-            PhoneNumbers: mobile,
-            SignName: signName,
-            TemplateCode: templateCode,
-            TemplateParam: JSON.stringify(param)
-          }).then((res) => {
-            const { Code } = res
-            if (Code === 'OK') {
-              resolve()
-            } else {
-              reject(Code)
-            }
-          }, (err) => {
-            if (err.data) {
-              reject(err.data.Code)
-            } else {
-              reject(err)
-            }
-          })
+          smsClient
+            .sendSMS({
+              PhoneNumbers: mobile,
+              SignName: signName,
+              TemplateCode: templateCode,
+              TemplateParam: JSON.stringify(param)
+            })
+            .then(
+              (res) => {
+                const { Code } = res
+                if (Code === 'OK') {
+                  resolve()
+                } else {
+                  reject(Code)
+                }
+              },
+              (err) => {
+                if (err.data) {
+                  reject(err.data.Code)
+                } else {
+                  reject(err)
+                }
+              }
+            )
         })
       } catch (e) {
         const error = new Error('sumorSMS.SMS_SEND_FAILED')
@@ -58,8 +65,12 @@ export default class SMS {
         throw error
       }
     } else {
-      this._logger.error('Message sending function is disabled, please check the configuration \'sms\'.')
-      this._logger.trace(`Need to send message ${templateCode} to ${mobilePrefix} ${mobile}, parameter ${JSON.stringify(param)}`)
+      this._logger.error(
+        "Message sending function is disabled, please check the configuration 'sms'."
+      )
+      this._logger.trace(
+        `Need to send message ${templateCode} to ${mobilePrefix} ${mobile}, parameter ${JSON.stringify(param)}`
+      )
     }
   }
 }

@@ -23,25 +23,51 @@ export default (report, connector, cache, logger, user) => {
   }
 
   methods.info = async (table, forceReload) => {
-    if (!forceReload && cache.info[table]) { return cache.info[table] }
+    if (!forceReload && cache.info[table]) {
+      return cache.info[table]
+    }
     const info = await trx.from(table).columnInfo()
     const result = {}
     for (const i in info) {
       const fieldName = toCamelCase(i, '_', true)
       let type
       switch (info[i].type) {
-        case 'char': type = 'string'; break
-        case 'varchar': type = 'string'; break
-        case 'text': type = 'string'; break
-        case 'mediumtext': type = 'string'; break
-        case 'tinyint': type = 'number'; break
-        case 'smallint': type = 'number'; break
-        case 'int': type = 'number'; break
-        case 'integer': type = 'number'; break
-        case 'bigint': type = 'number'; break
-        case 'float': type = 'number'; break
-        case 'double': type = 'number'; break
-        case '': type = 'string'; break
+        case 'char':
+          type = 'string'
+          break
+        case 'varchar':
+          type = 'string'
+          break
+        case 'text':
+          type = 'string'
+          break
+        case 'mediumtext':
+          type = 'string'
+          break
+        case 'tinyint':
+          type = 'number'
+          break
+        case 'smallint':
+          type = 'number'
+          break
+        case 'int':
+          type = 'number'
+          break
+        case 'integer':
+          type = 'number'
+          break
+        case 'bigint':
+          type = 'number'
+          break
+        case 'float':
+          type = 'number'
+          break
+        case 'double':
+          type = 'number'
+          break
+        case '':
+          type = 'string'
+          break
         default:
           type = 'string'
           console.log(`未知数据类型 ${i} ${JSON.stringify(info[i])}`)
@@ -221,10 +247,10 @@ export default (report, connector, cache, logger, user) => {
     if (!data.id) {
       data.id = await getId()
     }
-        data.createdBy = user || ""; // eslint-disable-line
-        data.createdTime = Date.now(); // eslint-disable-line
-        data.updatedBy = user || ""; // eslint-disable-line
-        data.updatedTime = Date.now(); // eslint-disable-line
+    data.createdBy = user || '' // eslint-disable-line
+    data.createdTime = Date.now() // eslint-disable-line
+    data.updatedBy = user || '' // eslint-disable-line
+    data.updatedTime = Date.now() // eslint-disable-line
 
     data = fromCamelCaseData(data)
     const sql = trx.insert(data).into(table)
@@ -245,12 +271,11 @@ export default (report, connector, cache, logger, user) => {
       throw new Error('数据ID不存在，无法找到要更新的数据')
     }
 
-        data.updatedBy = user || ""; // eslint-disable-line
-        data.updatedTime = Date.now(); // eslint-disable-line
+    data.updatedBy = user || '' // eslint-disable-line
+    data.updatedTime = Date.now() // eslint-disable-line
 
     data = fromCamelCaseData(data)
-    const sql = trx.update(data).from(table)
-      .where({ id })
+    const sql = trx.update(data).from(table).where({ id })
 
     logger.trace(sql.toSQL().sql, sql.toSQL().bindings)
 

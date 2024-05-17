@@ -6,13 +6,10 @@ export default async (payload, config) => {
   const timestamp = Math.floor(Date.now() / 1000)
   const nonceStr = Math.random().toString(36).substr(2, 15)
 
-  const signature = sign([
-    payload.method.toUpperCase(),
-    payload.url,
-    timestamp,
-    nonceStr,
-    payload.body
-  ], config)
+  const signature = sign(
+    [payload.method.toUpperCase(), payload.url, timestamp, nonceStr, payload.body],
+    config
+  )
 
   const headers = {
     'Content-Type': 'application/json',

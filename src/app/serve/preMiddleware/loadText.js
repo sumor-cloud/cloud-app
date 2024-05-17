@@ -1,8 +1,7 @@
 const matchParameters = (message, data) => {
   message = message || ''
   data = data || {}
-  const parameters = message
-    .match(/\${.*?}/g)
+  const parameters = message.match(/\${.*?}/g)
   if (parameters) {
     for (const attr of parameters) {
       const parameterName = attr.substr(2, attr.length - 3)
@@ -16,8 +15,8 @@ const matchParameters = (message, data) => {
 const getText = (texts, defaultLanguage) => (key, data, language) => {
   data = data || {}
   language = language || defaultLanguage
-  let lang1; let
-    lang2
+  let lang1
+  let lang2
   if (language !== '') {
     const languageArray = language.split('-')
     lang1 = languageArray[0]

@@ -53,12 +53,12 @@ const parseOptions = (options) => {
 }
 
 class AliyunOSS {
-  constructor (config) {
+  constructor(config) {
     this.aliyunOSS = new OSS(config)
     // this.imgClient = OSS.ImageClient(config);
   }
 
-  async put (target, stream) {
+  async put(target, stream) {
     const response = await this.aliyunOSS.putStream(target, stream)
     if (response.res.status > 299) {
       const error = new Error('sumorStorage.STORAGE_INSTANCE_ERROR')
@@ -67,7 +67,7 @@ class AliyunOSS {
     }
   }
 
-  async info (target, options) {
+  async info(target, options) {
     options = options || {}
     const result = {}
     let response
@@ -113,9 +113,13 @@ class AliyunOSS {
     result.format = getInfo('Format')
     result.size = getInfo('FileSize')
     result.height = getInfo('ImageHeight')
-    if (result.height) { result.height = parseInt(result.height, 10) }
+    if (result.height) {
+      result.height = parseInt(result.height, 10)
+    }
     result.width = getInfo('ImageWidth')
-    if (result.width) { result.width = parseInt(result.width, 10) }
+    if (result.width) {
+      result.width = parseInt(result.width, 10)
+    }
     result.make = getInfo('LensMake')
     result.model = getInfo('LensModel')
     // try {
@@ -148,7 +152,7 @@ class AliyunOSS {
     return result
   }
 
-  async get (target, options) {
+  async get(target, options) {
     let result
     let response
     let error
@@ -173,7 +177,7 @@ class AliyunOSS {
     return result
   }
 
-  async delete (target) {
+  async delete(target) {
     const response = await this.aliyunOSS.delete(target)
     if (response.res.status > 299) {
       const err = new Error('sumorStorage.STORAGE_INSTANCE_ERROR')
@@ -182,7 +186,7 @@ class AliyunOSS {
     }
   }
 
-  async exists (target) {
+  async exists(target) {
     let flag = true
     try {
       await this.aliyunOSS.get(target)

@@ -1,7 +1,7 @@
 import type from '../../../utils/type.js'
 // import uuid from '../../modules/tools/uuid';
 class Token {
-  constructor (req) {
+  constructor(req) {
     this.req = req
     this._id = req.sumor.cookie.t
     this._user = null
@@ -10,69 +10,73 @@ class Token {
     this._time = 0
   }
 
-  async update ({ user, data, permission }) {
+  async update({ user, data, permission }) {
     if (user) {
       this._user = user
       if (this.req.sumor.db) {
         this.req.sumor.db.setUser(user)
       }
     }
-    if (permission) { this._permission = permission }
-    if (data) { this._data = data }
+    if (permission) {
+      this._permission = permission
+    }
+    if (data) {
+      this._data = data
+    }
     // await this.save();
   }
 
-  get id () {
+  get id() {
     return this._id || ''
   }
 
-  set id (id) {
+  set id(id) {
     throw new Error('sumorApp.TOKEN_ID_EDIT_FORBIDDEN_DIRECTLY')
   }
 
-  get time () {
+  get time() {
     return this._time || ''
   }
 
-  set time (time) {
+  set time(time) {
     throw new Error('sumorApp.TOKEN_TIME_EDIT_FORBIDDEN_DIRECTLY')
   }
 
-  get data () {
+  get data() {
     return this._data || {}
   }
 
-  set data (id) {
+  set data(id) {
     throw new Error('sumorApp.TOKEN_DATA_EDIT_FORBIDDEN_DIRECTLY')
   }
 
-  get user () {
+  get user() {
     return this._user || ''
   }
 
-  set user (user) {
+  set user(user) {
     throw new Error('sumorApp.USER_EDIT_FORBIDDEN_DIRECTLY')
   }
 
-  get permission () {
+  get permission() {
     return this._permission
   }
 
-  set permission (permission) {
+  set permission(permission) {
     throw new Error('sumorApp.PERMISSION_EDIT_FORBIDDEN_DIRECTLY')
   }
 
-  async setId (id) {
+  async setId(id) {
     this._id = id
     await this.save()
   }
 
-  async setData (key, value) {
+  async setData(key, value) {
     this._data[key] = value
     await this.save()
   }
 
-  async setPermission (key, list) {
+  async setPermission(key, list) {
     /*
             支持三种类型的设置：
             1. Permission1,"Attribute1"
@@ -98,7 +102,7 @@ class Token {
     }
   }
 
-  has (key, value) {
+  has(key, value) {
     let matched = false
     if (this._permission[key]) {
       if (value) {
@@ -112,7 +116,7 @@ class Token {
     return matched
   }
 
-  check (key, value) {
+  check(key, value) {
     if (!this.user) {
       // 检查是否登录
       throw new Error('sumorApp.LOGIN_EXPIRED')
@@ -130,7 +134,9 @@ class Token {
         }
         if (typeof key === 'string') {
           currentMatched = this.has(key, value)
-          if (!currentMatched) { appendLacked(key, value) }
+          if (!currentMatched) {
+            appendLacked(key, value)
+          }
         } else {
           for (const i in key) {
             const current = key[i]
@@ -159,7 +165,7 @@ class Token {
     }
   }
 
-  async destroy () {
+  async destroy() {
     this._id = null
     await this.save()
     // if (this.id !== '') {
@@ -184,7 +190,7 @@ class Token {
   //   }
   // }
 
-  async save () {
+  async save() {
     this.req.sumor.cookie.t = this._id
   }
 }
@@ -192,9 +198,10 @@ class Token {
 export default async (app) => {
   app.use(async (req, res, next) => {
     const apiPaths = Object.keys(app.sumor.meta.api)
-    const matched = apiPaths.filter((path) => {
-      return req.path === `/${path.replace(/\./g, '/')}`
-    }).length > 0
+    const matched =
+      apiPaths.filter((path) => {
+        return req.path === `/${path.replace(/\./g, '/')}`
+      }).length > 0
     if (matched) {
       req.sumor.token = new Token(req)
       if (app.sumor.meta.event.token) {

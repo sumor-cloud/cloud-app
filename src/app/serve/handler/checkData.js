@@ -50,7 +50,10 @@ export default (data, meta) => {
     }
 
     // 校验数据
-    if (definition.required === true && (data[key] === undefined || data[key] === null || data[key] === '')) {
+    if (
+      definition.required === true &&
+      (data[key] === undefined || data[key] === null || data[key] === '')
+    ) {
       throw new Error('sumorApp.REQUIRED')
     }
     if (definition.length && data[key] && data[key].length > definition.length) {

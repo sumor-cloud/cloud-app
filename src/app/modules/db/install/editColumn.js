@@ -57,10 +57,14 @@ export default (table, name, parameterInfo, alterFlag) => {
     if (parameterInfo.default !== null) {
       let defaultValue
       if (actualValueType === 'number') {
-        if (parameterInfo.default === undefined) { parameterInfo.default = 0 }
+        if (parameterInfo.default === undefined) {
+          parameterInfo.default = 0
+        }
         defaultValue = parseInt(parameterInfo.default, 10)
       } else {
-        if (parameterInfo.default === undefined) { parameterInfo.default = '' }
+        if (parameterInfo.default === undefined) {
+          parameterInfo.default = ''
+        }
         defaultValue = parameterInfo.default.toString()
       }
       parameterColumn.defaultTo(defaultValue)

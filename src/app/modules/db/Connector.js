@@ -3,7 +3,7 @@ import knex from 'knex'
 import parseConfig from './utils/parseConfig.js'
 
 export default class Connector {
-  constructor (config, logger) {
+  constructor(config, logger) {
     this.config = config
     this._config = parseConfig(config)
     this._logger = logger || {
@@ -12,9 +12,12 @@ export default class Connector {
     }
   }
 
-  async ensure () {
-    let baseConfig; let database; let mysqlChecker; let schemaResult; let
-      existSchema
+  async ensure() {
+    let baseConfig
+    let database
+    let mysqlChecker
+    let schemaResult
+    let existSchema
     switch (this._config.client) {
       case 'better-sqlite3':
         await fse.ensureFile(this._config.connection.filename)
@@ -25,10 +28,12 @@ export default class Connector {
         delete baseConfig.database
         mysqlChecker = knex(parseConfig(baseConfig))
         schemaResult = await mysqlChecker.raw('show databases')
-        existSchema = !!(schemaResult[0].filter((obj) => obj.Database === database)[0])
+        existSchema = !!schemaResult[0].filter((obj) => obj.Database === database)[0]
         if (!existSchema) {
           this._logger.trace('数据库不存在，正在创建')
-          await mysqlChecker.raw(`CREATE DATABASE IF NOT EXISTS ${database} default charset utf8mb4 COLLATE utf8mb4_general_ci`)
+          await mysqlChecker.raw(
+            `CREATE DATABASE IF NOT EXISTS ${database} default charset utf8mb4 COLLATE utf8mb4_general_ci`
+          )
           this._logger.trace('数据库创建完成')
         }
         await new Promise((resolve) => {
@@ -43,13 +48,13 @@ export default class Connector {
     }
   }
 
-  async connect () {
+  async connect() {
     if (!this.knex) {
       this.knex = knex(this._config)
     }
   }
 
-  async destroy () {
+  async destroy() {
     if (this.knex) {
       await new Promise((resolve) => {
         this.knex.destroy(() => {

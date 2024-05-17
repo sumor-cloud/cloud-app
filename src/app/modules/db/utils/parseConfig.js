@@ -27,7 +27,7 @@ export default (config) => {
   switch (knexConfig.client) {
     case 'better-sqlite3':
       knexConfig.connection = {
-        filename: config.path || (`${process.cwd()}/main.sqlite`)
+        filename: config.path || `${process.cwd()}/main.sqlite`
       }
       knexConfig.useNullAsDefault = true
       break

@@ -12,7 +12,7 @@ const getVar = (data, alias) => {
 
   const less = {}
   for (const i in data) {
-    less[i] = data[i]// +=`@${i}:${data[i]};\n`;
+    less[i] = data[i] // +=`@${i}:${data[i]};\n`;
   }
   for (const i in alias) {
     less[i] = `@${alias[i]}`

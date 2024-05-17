@@ -1,7 +1,5 @@
 export default async (context, req, res) => {
-  const {
-    data, config, response, tools, wechat
-  } = context
+  const { data, config, response, tools, wechat } = context
   if (config.wechat) {
     response.respond = true
     const id = data.id
@@ -13,7 +11,12 @@ export default async (context, req, res) => {
       package: `prepay_id=${id}`,
       signType: 'RSA' // 微信签名方式：
     }
-    params.paySign = wechat.pay.sign([params.appId, params.timeStamp, params.nonceStr, params.package])
+    params.paySign = wechat.pay.sign([
+      params.appId,
+      params.timeStamp,
+      params.nonceStr,
+      params.package
+    ])
     res.end(`
 <html>
 <head>

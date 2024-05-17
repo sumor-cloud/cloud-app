@@ -8,7 +8,7 @@ const serviceUpTime = Date.now()
 
 // const round = (x) => Math.round(x * 100) / 100;
 const round = (x) => Math.round(x)
-const getMemory = () => round((os.totalmem() - os.freemem()) / os.totalmem() * 100)
+const getMemory = () => round(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)
 const getIdleStatus = () => ({
   time: Date.now(),
   idle: os.cpus().map((cpu) => cpu.times.idle)

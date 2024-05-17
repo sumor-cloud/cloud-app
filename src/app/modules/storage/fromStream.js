@@ -1,4 +1,4 @@
-function streamToBuffer (stream) {
+function streamToBuffer(stream) {
   return new Promise((resolve, reject) => {
     const buffers = []
     stream.on('error', reject)

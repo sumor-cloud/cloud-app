@@ -16,11 +16,14 @@ export default (info) => {
         resultType = 'string'
       } else if (info.scale !== null && info.scale !== undefined) {
         resultType = 'double'
-      } else if (length > 9) { // INT max 2147483647
+      } else if (length > 9) {
+        // INT max 2147483647
         resultType = 'bigInteger'
-      } else if (length > 4) { // SMALLINT max 32767
+      } else if (length > 4) {
+        // SMALLINT max 32767
         resultType = 'integer'
-      } else if (length > 2) { // TINYINT max 127
+      } else if (length > 2) {
+        // TINYINT max 127
         resultType = 'smallint'
       } else {
         resultType = 'tinyint'

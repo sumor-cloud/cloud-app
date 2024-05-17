@@ -1,6 +1,4 @@
 root: true
 extends:
   - standard
-
-rules:
-  no-template-curly-in-string: 0
+  - plugin:prettier/recommended

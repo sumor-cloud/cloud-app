@@ -1,5 +1,6 @@
-export default async (sec) => new Promise((resolve) => {
-  setTimeout(() => {
-    resolve()
-  }, sec * 1000)
-})
+export default async (sec) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, sec * 1000)
+  })

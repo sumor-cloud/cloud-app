@@ -8,7 +8,9 @@ export default async (paths) => {
   for (const i in stores) {
     const importName = `store${parseInt(i) + 1}`
     imports.push(`import ${importName} from "../../web/stores/${stores[i]}"`)
-    result.push(`"${stores[i].replace('.js', '').replace(/\\/g, '/').replace(/\//g, '.')}":${importName}`)
+    result.push(
+      `"${stores[i].replace('.js', '').replace(/\\/g, '/').replace(/\//g, '.')}":${importName}`
+    )
   }
   const resultFile = `${imports.join(';\n')};
 const stores = {

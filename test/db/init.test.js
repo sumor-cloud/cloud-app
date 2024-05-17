@@ -1,6 +1,4 @@
-import {
-  describe, expect, it
-} from '@jest/globals'
+import { describe, expect, it } from '@jest/globals'
 
 // import dbConfig from '../assets/db.js'
 // import knex from 'knex'

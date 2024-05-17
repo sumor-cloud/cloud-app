@@ -3,9 +3,7 @@ import installTable from './installTable.js'
 import sortView from './sortView/index.js'
 import fromCamelCase from '../utils/fromCamelCase.js'
 
-export default async ({
-  config, logger, entity, view
-}) => {
+export default async ({ config, logger, entity, view }) => {
   logger = logger || {
     debug: console.log,
     trace: console.log

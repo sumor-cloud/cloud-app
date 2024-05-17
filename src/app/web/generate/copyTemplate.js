@@ -25,5 +25,8 @@ export default async (context, paths, force) => {
   const webEnv = {
     dark: !!context.config.dark
   }
-  await fse.writeFile(`${paths.tmpWeb}/src/env.js`, `export default ${JSON.stringify(webEnv, null, 4)}`)
+  await fse.writeFile(
+    `${paths.tmpWeb}/src/env.js`,
+    `export default ${JSON.stringify(webEnv, null, 4)}`
+  )
 }

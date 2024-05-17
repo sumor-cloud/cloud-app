@@ -5,9 +5,13 @@ export default async (context, paths) => {
   const pageRouteStrings = []
   const pages = await findReference(paths.pages, ['vue'])
   for (const page in pages) {
-    const relPath = (`../../web/pages/${page}`).replace(/\\/g, '/')
+    const relPath = `../../web/pages/${page}`.replace(/\\/g, '/')
     const meta = pages[page]
-    let subPath = (`/${page}`).replace(paths.pages, '').replace('.vue', '').replace(/\\/g, '/').toLowerCase()
+    let subPath = `/${page}`
+      .replace(paths.pages, '')
+      .replace('.vue', '')
+      .replace(/\\/g, '/')
+      .toLowerCase()
       .replace('/index', '')
     if (subPath === '') {
       subPath = '/'

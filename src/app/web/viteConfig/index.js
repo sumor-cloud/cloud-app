@@ -17,25 +17,28 @@ export default async (context, paths) => {
   await fse.remove(process.cwd() + '/tmp/web/.vite')
   await fse.ensureDir(process.cwd() + '/tmp/web/.vite')
 
-  viteConfig = Object.assign({
-    root: process.cwd() + '/tmp/web',
-    base: '/',
-    publicDir: process.cwd() + '/web/public',
-    cacheDir: process.cwd() + '/tmp/web/.vite'
-  }, viteConfig)
+  viteConfig = Object.assign(
+    {
+      root: process.cwd() + '/tmp/web',
+      base: '/',
+      publicDir: process.cwd() + '/web/public',
+      cacheDir: process.cwd() + '/tmp/web/.vite'
+    },
+    viteConfig
+  )
   viteConfig.server = Object.assign({}, viteConfig.server, {
     server: { middlewareMode: 'html' },
     port
   })
-  viteConfig.plugins = [
-    pluginRewriteAll(),
-    vuePlugin()
-  ].concat(viteConfig.plugins)
+  viteConfig.plugins = [pluginRewriteAll(), vuePlugin()].concat(viteConfig.plugins)
   viteConfig.css = Object.assign({}, viteConfig.css, css)
   viteConfig.build = Object.assign({}, viteConfig.build)
-  viteConfig.resolve = Object.assign({
-    extensions: ['.vue', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
-  }, viteConfig.resolve)
+  viteConfig.resolve = Object.assign(
+    {
+      extensions: ['.vue', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+    },
+    viteConfig.resolve
+  )
 
   return viteConfig
 }

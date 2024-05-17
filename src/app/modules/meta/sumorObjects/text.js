@@ -1,3 +1,5 @@
+/* eslint-disable no-template-curly-in-string */
+
 export default {
   sumorApp: {
     name: '轻呈云应用文本',

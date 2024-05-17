@@ -38,15 +38,17 @@ export default async (trx, tableName, info) => {
 
   if (!exists) {
     if (!info.rename && !info.deleted) {
-      await trx.schema.createTable(tableName, (table) => {
-        for (const name in property) {
-          const columnName = fromCamelCase(name, '_')
-          const propertyInfo = property[name]
-          if (!propertyInfo.rename && !propertyInfo.deleted) {
-            editColumn(table, columnName, propertyInfo)
+      await trx.schema
+        .createTable(tableName, (table) => {
+          for (const name in property) {
+            const columnName = fromCamelCase(name, '_')
+            const propertyInfo = property[name]
+            if (!propertyInfo.rename && !propertyInfo.deleted) {
+              editColumn(table, columnName, propertyInfo)
+            }
           }
-        }
-      }).transacting(trx)
+        })
+        .transacting(trx)
     }
   } else if (info.rename) {
     const renamedTableName = fromCamelCase(info.rename, '_')
@@ -55,27 +57,31 @@ export default async (trx, tableName, info) => {
     await trx.schema.dropTable(tableName)
   } else {
     let info = await trx(tableName).columnInfo()
-    await trx.schema.alterTable(tableName, (table) => {
-      for (const name in property) {
-        const columnName = fromCamelCase(name, '_')
-        const propertyInfo = property[name]
-        if (info[columnName] && propertyInfo.rename) {
-          const renameColumnName = fromCamelCase(propertyInfo.rename, '_')
-          table.renameColumn(columnName, renameColumnName)
+    await trx.schema
+      .alterTable(tableName, (table) => {
+        for (const name in property) {
+          const columnName = fromCamelCase(name, '_')
+          const propertyInfo = property[name]
+          if (info[columnName] && propertyInfo.rename) {
+            const renameColumnName = fromCamelCase(propertyInfo.rename, '_')
+            table.renameColumn(columnName, renameColumnName)
+          }
         }
-      }
-    }).transacting(trx)
+      })
+      .transacting(trx)
     info = await trx(tableName).columnInfo()
     await trx.schema.alterTable(tableName, (table) => {
       for (const name in property) {
         const columnName = fromCamelCase(name, '_')
         const propertyInfo = property[name]
         if (!propertyInfo.rename) {
-          if (!info[columnName]) { // 不存在该字段
+          if (!info[columnName]) {
+            // 不存在该字段
             if (!propertyInfo.rename && !propertyInfo.deleted) {
               editColumn(table, columnName, propertyInfo)
             }
-          } else { // 已存在该字段，更新字段内容
+          } else {
+            // 已存在该字段，更新字段内容
             if (!propertyInfo.deleted) {
               editColumn(table, columnName, propertyInfo, true)
             } else {

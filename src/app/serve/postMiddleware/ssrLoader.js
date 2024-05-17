@@ -9,9 +9,7 @@ export default async (app) => {
   if (await fse.exists(webPath)) {
     const indexFile = await fse.readFile(`${webPath}/client/index.html`, 'utf-8')
 
-    const manifest = JSON.parse(
-      await fse.readFile(`${webPath}/client/ssr-manifest.json`, 'utf-8')
-    )
+    const manifest = JSON.parse(await fse.readFile(`${webPath}/client/ssr-manifest.json`, 'utf-8'))
 
     app.use(
       exposeRoot,

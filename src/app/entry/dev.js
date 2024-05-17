@@ -8,9 +8,7 @@ import generate from '../web/generate/index.js'
 import { createServer, defineConfig } from 'vite'
 
 export default async (context) => {
-  const {
-    getLogger, root
-  } = context
+  const { getLogger, root } = context
   const logger = getLogger('DEV')
 
   const watch = singleThreadCaller(async (force) => {
@@ -22,7 +20,8 @@ export default async (context) => {
   const watcher = chokidar.watch('.', {
     // ignore folders /tmp and /node_modules
     cwd: `${root}/web`,
-    ignored: /(^|[/\\])(tmp|node_modules|\.git|\.nuxt|\.idea|\.vscode|\.cache|\.sass-cache|\.DS_Store|\.env)/,
+    ignored:
+      /(^|[/\\])(tmp|node_modules|\.git|\.nuxt|\.idea|\.vscode|\.cache|\.sass-cache|\.DS_Store|\.env)/,
     persistent: true
   })
   watcher.on('all', async (event, path) => {
