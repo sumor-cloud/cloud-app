@@ -18,10 +18,10 @@
     "sca": "cli.js"
   },
   "dependencies": {
-    "@sumor/config": "^1.1.0",
-    "@sumor/logger": "^1.1.0",
+    "@sumor/config": "^1.1.2",
+    "@sumor/logger": "^1.2.0",
+    "@sumor/ssl-server": "^1.0.21",
     "@alicloud/sms-sdk": "^1.1.6",
-    "@sumor/ssl-server": "^1.0.19",
     "@vitejs/plugin-vue": "^4.2.3",
     "ali-oss": "^6.20.0",
     "axios": "^1.4.0",

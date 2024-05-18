@@ -2,7 +2,6 @@ import fse from 'fs-extra'
 import { pathToFileURL } from 'url'
 import formatter from './formatter.js'
 import loadFiles from '../../../utils/loadFiles.js'
-import { find } from '@sumor/config'
 
 import sumorText from './sumorObjects/text.js'
 import sumorType from './sumorObjects/type.js'
@@ -10,6 +9,7 @@ import sumorRange from './sumorObjects/range/index.js'
 import getSumorApi from './sumorObjects/api.js'
 import findFiles from '../../../utils/findFiles.js'
 import parseFileName from '../../../utils/parseFileName.js'
+import loadMeta from '../../../../src/context/loadMeta.js'
 
 export default async context => {
   const sumorApi = getSumorApi(context)
@@ -20,40 +20,16 @@ export default async context => {
       parameters: sumorApi[i].parameters
     }
   }
-  const categories = ['text', 'rule', 'type', 'entity', 'view', 'api', 'event']
   const meta = {
     range: sumorRange,
     text: sumorText,
     type: sumorType,
     api: sumorApiInfo
   }
-  for (const category of categories) {
-    let type = category
-    meta[category] = meta[category] || {}
-    if (category === 'api' || category === 'event') {
-      type = 'program'
-    }
-    let files = await find(`${context.root}/${category}`, type)
-    // change files key's slash to point
-    const newFiles = {}
-    for (const i in files) {
-      newFiles[i.replace(/\//g, '.')] = files[i]
-    }
-    files = newFiles
 
-    if (category === 'api') {
-      const newFiles = {}
-      for (const i in files) {
-        newFiles[`api.${i}`] = files[i]
-      }
-      files = newFiles
-    }
-    meta[category] = Object.assign(meta[category], files)
-    if (formatter[type]) {
-      for (const name in meta[category]) {
-        meta[category][name] = formatter[type](meta[category][name], meta, name)
-      }
-    }
+  const jsonMeta = await loadMeta(context.root)
+  for (const i in jsonMeta) {
+    meta[i] = jsonMeta[i]
   }
 
   await fse.ensureDir(`${process.cwd()}/tmp`)

@@ -33,7 +33,7 @@ export default async app => {
       })
     )
   }
-  if (app.sumor.mode === 'production' || app.sumor.mode === 'preview') {
+  if (app.sumor.mode === 'production') {
     await ssrLoader(app)
   }
 }

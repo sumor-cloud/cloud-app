@@ -5,6 +5,7 @@ import fse from 'fs-extra'
 import root from './root.js'
 import cmdCover from './legacy/utils/cmdCover.js'
 import app from './legacy/app/index.js'
+import setup from './legacy/app/entry/setup.js'
 
 const program = new Command()
 
@@ -18,7 +19,7 @@ program
   .command('dev')
   .description('开发')
   .action(async () => {
-    await app({ mode: 'dev' })
+    await app({ mode: 'development' })
   })
 
 program
@@ -34,19 +35,20 @@ program
   .command('setup')
   .description('安装')
   .action(async () => {
-    await app({ mode: 'setup' })
+    await setup()
   })
 program
   .command('preview')
   .description('试运行')
   .action(async () => {
-    await app({ mode: 'preview' })
+    await app({ mode: 'build' })
+    await app({ mode: 'production' })
   })
 program
   .command('run')
   .description('运行')
   .action(async () => {
-    await app({ mode: 'run' })
+    await app({ mode: 'production' })
   })
 
 program.parse(process.argv)

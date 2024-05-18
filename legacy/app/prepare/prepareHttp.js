@@ -4,7 +4,7 @@ export default async context => {
   const portString = port === 443 ? '' : `:${port}`
   const origin = context.config.origin || `https://${domain}${portString}`
 
-  const uiPort = context.mode === 'development' || context.mode === 'preview' ? port + 1 : port
+  const uiPort = port + 1
 
   return {
     domain,

@@ -12,42 +12,10 @@ export default options => {
   }
   context.getContext = () => ({ ...middlewares })
 
-  const inboundMode = (options.mode || process.env.mode || 'production').toLowerCase()
-
-  let mode
-  switch (inboundMode) {
-    case 'dev':
-      mode = 'development'
-      break
-    case 'debug':
-      mode = 'development'
-      break
-    case 'development':
-      mode = 'development'
-      break
-    case 'build':
-      mode = 'build'
-      break
-    case 'setup':
-      mode = 'setup'
-      break
-    case 'preview':
-      mode = 'preview'
-      break
-    case 'production':
-      mode = 'production'
-      break
-    case 'run':
-      mode = 'production'
-      break
-    default:
-      mode = 'production'
-      break
-  }
-
   context.setContext({
-    mode
+    mode: options.mode || 'production'
   })
+
   context.root = process.cwd()
 
   return context

@@ -1,16 +1,16 @@
 import prepareContext from './prepareContext.js'
 import tools from '../modules/tools/index.js'
-import prepareConfig from './prepareConfig.js'
+import loadConfig from '../../../src/context/loadConfig.js'
 import prepareHttp from './prepareHttp.js'
 import prepareLogger from './prepareLogger.js'
 import prepareDatabase from './prepareDatabase.js'
-import load from '../modules/meta/load.js'
+import load from './meta/load.js'
 
 export default async options => {
   const context = prepareContext(options)
 
   // 获取配置信息
-  const config = await prepareConfig(context)
+  const config = await loadConfig(process.cwd())
   context.setContext({
     tools,
     config
@@ -50,7 +50,6 @@ export default async options => {
   await load(context)
 
   context.logger.info(`日志记录级别：${context.logLevel.toUpperCase()}`)
-  context.logger.info(`运行模式：${context.mode.toUpperCase()}`)
   context.logger.trace(`全局交互对象: ${Object.keys(context).join(', ')}`)
   context.logger.trace(`配置信息: ${JSON.stringify(context.config, null, 4)}`)
 
