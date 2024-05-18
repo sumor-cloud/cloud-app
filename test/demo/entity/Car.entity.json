@@ -1,0 +1,1 @@
+{ "name": "Car", "property": { "model": { "name": "Model", "type": "string", "length": 100 } } }

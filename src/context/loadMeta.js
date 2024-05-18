@@ -1,5 +1,6 @@
 import { find } from '@sumor/config'
 import formatter from '../../legacy/app/prepare/meta/formatter.js'
+import loadFiles from '../../legacy/utils/loadFiles.js'
 
 export default async root => {
   const meta = {}
@@ -31,6 +32,12 @@ export default async root => {
         meta[category][name] = formatter[type](meta[category][name], meta, name)
       }
     }
+  }
+
+  const viewSql = await loadFiles(`${root}/view`, 'view', 'sql')
+  for (const i in viewSql) {
+    meta.view[i] = formatter.view(meta.view[i])
+    meta.view[i] = Object.assign(meta.view[i], viewSql[i])
   }
   return meta
 }

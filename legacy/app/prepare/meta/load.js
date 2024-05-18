@@ -1,7 +1,5 @@
 import fse from 'fs-extra'
 import { pathToFileURL } from 'url'
-import formatter from './formatter.js'
-import loadFiles from '../../../utils/loadFiles.js'
 
 import sumorText from './sumorObjects/text.js'
 import sumorType from './sumorObjects/type.js'
@@ -38,11 +36,6 @@ export default async context => {
   // 获取对象文件
   for (const i in sumorApi) {
     meta.api[i] = sumorApi[i]
-  }
-  const viewSql = await loadFiles(`${context.root}/view`, 'view', 'sql')
-  for (const i in viewSql) {
-    meta.view[i] = formatter.view(meta.view[i])
-    meta.view[i] = Object.assign(meta.view[i], viewSql[i])
   }
 
   // 获取api程序对象文件
