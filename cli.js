@@ -3,8 +3,8 @@ import { Command } from 'commander'
 import fse from 'fs-extra'
 
 import root from './root.js'
-import cmdCover from './src/utils/cmdCover.js'
-import app from './src/app/index.js'
+import cmdCover from './legacy/utils/cmdCover.js'
+import app from './legacy/app/index.js'
 
 const program = new Command()
 
@@ -23,9 +23,7 @@ program
 
 program
   .command('build')
-  .description('打包依赖库')
-  .option('-d, --debug', '调试模式')
-  .option('-t, --type [name]', '构建环境，app、vue、node')
+  .description('打包')
   .action(async () => {
     await app({
       mode: 'build'

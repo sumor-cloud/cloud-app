@@ -14,16 +14,19 @@ export default async options => {
     await dev(context)
     context.logger.info('开发环境准备完成')
   }
+
   if (context.mode === 'build' || context.mode === 'preview') {
     context.logger.info('开始生成生产代码')
     await build(context)
     context.logger.info('生产代码生成完毕')
   }
+
   if (context.mode === 'setup') {
     context.logger.info('开始部署数据库')
     await setup(context)
     context.logger.info('部署数据库完成')
   }
+
   if (
     context.mode === 'development' ||
     context.mode === 'preview' ||

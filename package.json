@@ -77,8 +77,6 @@
     "link": "npm link --force",
     "lint": "eslint .",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/test/**/*.test.js'",
-    "test-config": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/test/**/config/*.test.js'",
-    "test-logger": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/test/**/logger/*.test.js'",
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --testMatch='**/test/**/*.test.js'",
     "push-tag": "git push && git push --tags",
     "publish-beta": "npm version prerelease --preid beta && npm run push-tag",
