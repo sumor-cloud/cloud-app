@@ -2,9 +2,9 @@ import prepareContext from './prepareContext.js'
 import tools from '../modules/tools/index.js'
 import loadConfig from '../../../src/context/loadConfig.js'
 import prepareHttp from './prepareHttp.js'
-import prepareLogger from './prepareLogger.js'
 import prepareDatabase from './prepareDatabase.js'
 import load from './meta/load.js'
+import Logger from '@sumor/logger'
 
 export default async options => {
   const context = prepareContext(options)
@@ -31,7 +31,12 @@ export default async options => {
   })
 
   // 准备额外参数
-  const getLogger = await prepareLogger(context)
+  const getLogger = (scope, id) =>
+    new Logger({
+      scope,
+      level: context.config.logLevel,
+      id
+    })
   const logger = getLogger('APP')
 
   context.setContext({
