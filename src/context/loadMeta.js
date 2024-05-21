@@ -1,6 +1,8 @@
-import { find } from '@sumor/config'
+import { find, findReference } from '@sumor/config'
 import formatter from '../../legacy/app/prepare/meta/formatter.js'
 import loadFiles from '../../legacy/utils/loadFiles.js'
+import { pathToFileURL } from 'url'
+import libRoot from '../../root.js'
 
 export default async root => {
   const meta = {}
@@ -39,5 +41,34 @@ export default async root => {
     meta.view[i] = formatter.view(meta.view[i])
     meta.view[i] = Object.assign(meta.view[i], viewSql[i])
   }
+
+  // // 获取api程序对象文件
+  // const apiRootPath = `${root}/api`
+  // if (await fse.exists(apiRootPath)) {
+  //   const programList = await findFiles('**/**.js', { cwd: apiRootPath })
+  //   for (const item of programList) {
+  //     const itemPath = parseFileName(item)
+  //     const route = `api.${itemPath.path}`
+  //     const filePath = `${apiRootPath}/${item}`
+  //     meta.api[route] = meta.api[route] || {}
+  //     meta.api[route].program = (await import(pathToFileURL(filePath))).default
+  //   }
+  // }
+
+  const loadApis = async (root, prefix = '') => {
+    const apiMeta = await findReference(root, ['js'])
+    for (const path in apiMeta) {
+      apiMeta[path] = apiMeta[path] || {}
+      const item = apiMeta[path]
+      const filePath = `${root}/${path}.js`
+      item.program = (await import(pathToFileURL(filePath))).default
+      meta.api[`${prefix}${path.replace(/\//g, '.')}`] = item
+    }
+  }
+  // 获取api程序对象文件
+  await loadApis(`${root}/api`, 'api.')
+  // 获取sumor api程序对象文件
+  await loadApis(`${libRoot}/template/api`)
+
   return meta
 }

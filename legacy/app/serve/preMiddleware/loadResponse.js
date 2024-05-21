@@ -129,6 +129,13 @@ class Response {
     this._hasError = true
   }
 
+  errorMessage(code, message, data) {
+    this.code = code
+    this.message = message
+    this.data = data
+    this._hasError = true
+  }
+
   end() {
     if (this._data !== undefined) {
       try {
