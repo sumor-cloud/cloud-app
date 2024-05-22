@@ -1,23 +1,21 @@
 import { validate, format } from '@sumor/validator'
-
-class SumorError extends Error {
-  constructor(code, message, data) {
-    super(message)
-    this.name = 'SumorError'
-    this.code = code
-    this.data = data
-  }
-}
+import CloudAppError from '../../../../src/CloudAppError.js'
 
 export default (data, meta) => {
-  let messages = []
+  let errors = []
   for (const key in meta.parameters) {
-    const fieldMessages = validate(meta.parameters[key], data[key])
     data[key] = format(meta.parameters[key], data[key])
-    messages = messages.concat(fieldMessages)
+    const fieldErrors = validate(
+      {
+        error: true,
+        ...meta.parameters[key]
+      },
+      data[key]
+    )
+    errors = errors.concat(fieldErrors)
   }
-  if (messages.length > 0) {
-    throw new SumorError('SUMOR_VALIDATION_FAILED', 'Validation Failed', messages)
+  if (errors.length > 0) {
+    throw new CloudAppError('SUMOR_API_FIELDS_VALIDATION_FAILED', {}, errors)
   }
   //   const definition = meta.parameters[key]
   //

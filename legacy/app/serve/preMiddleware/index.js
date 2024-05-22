@@ -1,7 +1,5 @@
 import loadInstance from './loadInstance.js'
 import language from './language.js'
-import loadText from './loadText.js'
-import loadRange from './loadRange.js'
 import timezone from './timezone.js'
 import logger from './logger.js'
 import monitor from './monitor.js'
@@ -19,8 +17,6 @@ export default async app => {
   await loadInstance(app)
   await loadResponse(app)
   await language(app)
-  await loadText(app)
-  await loadRange(app)
   await timezone(app)
   await logger(app)
   await monitor(app)

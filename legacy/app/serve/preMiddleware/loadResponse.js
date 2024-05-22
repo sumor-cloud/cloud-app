@@ -79,36 +79,23 @@ class Response {
     this.respond = false
     this._changed = false
     this._hasError = false
-    this._code = 'OK'
-    this._message = ''
-    this._data = null
-  }
 
-  set code(val) {
-    const _message = this.req.sumor.text(val, this._data)
-    if (val && _message) {
-      this._code = val
-      this._message = _message
-    } else {
-      this._code = 'sumorApp.NETWORK_ERROR'
-      this._message = this.req.sumor.text(this._code)
+    this._response = {
+      code: 'OK',
+      data: null
     }
   }
 
-  get code() {
-    return this._code
+  set changed(val) {
+    throw new Error('changed is readonly')
   }
 
-  set message(val) {
-    this._message = val
-  }
-
-  get message() {
-    return this._message
+  get changed() {
+    return this._changed
   }
 
   set data(val) {
-    this._data = val
+    this._response.data = val
     this._changed = true
   }
 
@@ -116,48 +103,35 @@ class Response {
     return this._data
   }
 
-  set changed(val) {
-    this._changed = val
-  }
-
-  get changed() {
-    return this._changed
-  }
-
-  error(code) {
-    this.code = code
-    this._hasError = true
-  }
-
-  errorMessage(code, message, data) {
-    this.code = code
-    this.message = message
-    this.data = data
-    this._hasError = true
+  error(error) {
+    this._changed = true
+    try {
+      this._response = error.json()
+    } catch (e) {
+      this._response = {
+        code: error.code || 'UNKNOWN_ERROR',
+        message: error.message
+      }
+    }
   }
 
   end() {
-    if (this._data !== undefined) {
-      try {
-        this.res.send(this._data)
-      } catch (e) {
-        if (e.code !== 'ERR_HTTP_HEADERS_SENT') {
-          throw e
-        }
+    // directly send response data
+    try {
+      const data = this._response.data || ''
+      this.res.send(data)
+    } catch (e) {
+      if (e.code !== 'ERR_HTTP_HEADERS_SENT') {
+        throw e
       }
     }
   }
 
   send() {
-    const result = {
-      code: this._code,
-      message: this._message,
-      data: this._data
-    }
     if (!this._hasError) {
       try {
         this.res.set('Content-Type', 'application/json;charset=utf-8')
-        this.res.send(result)
+        this.res.send(this._response)
       } catch (e) {
         if (e.code !== 'ERR_HTTP_HEADERS_SENT') {
           throw e
@@ -171,11 +145,11 @@ class Response {
           this.res.send(
             getHtmlResponse({
               title: '服务异常，请稍后再试',
-              ...result
+              ...this._response
             })
           )
         } else {
-          this.res.send(result)
+          this.res.send(this._response)
         }
       } catch (e) {
         if (e.code !== 'ERR_HTTP_HEADERS_SENT') {

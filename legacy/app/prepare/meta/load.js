@@ -3,14 +3,12 @@ import { pathToFileURL } from 'url'
 
 import sumorText from './sumorObjects/text.js'
 import sumorType from './sumorObjects/type.js'
-import sumorRange from './sumorObjects/range/index.js'
 import findFiles from '../../../utils/findFiles.js'
 import parseFileName from '../../../utils/parseFileName.js'
 import loadMeta from '../../../../src/context/loadMeta.js'
 
 export default async context => {
   const meta = {
-    range: sumorRange,
     text: sumorText,
     type: sumorType
   }

@@ -11,7 +11,7 @@ export default async app => {
       req.sumor.meta = app.sumor.meta
       req.sumor.cors = true
 
-      req.sumor.response.changed = true
+      // req.sumor.response.changed = true
 
       if (app.sumor.meta.event.context) {
         await app.sumor.meta.event.context.program(req.sumor, req, res)
@@ -29,13 +29,9 @@ export default async app => {
         } catch (e) {
           // todo raise error for db connection
         }
-        req.sumor.response.error(e.message)
-        let message = ''
-        if (e instanceof Error) {
-          message = app.sumor.text(e.message)
-        }
-        req.sumor.logger.debug(`外部请求出错：${e.message} ${message}`)
         req.sumor.logger.trace(e)
+        e.language = req.sumor.language
+        req.sumor.response.error(e)
       }
 
       next()
