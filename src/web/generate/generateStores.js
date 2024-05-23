@@ -1,5 +1,5 @@
-import findFiles from '../../../utils/findFiles.js'
-import updateFile from '../../../utils/updateFile.js'
+import findFiles from '../../utils/findFiles.js'
+import updateFile from '../../utils/updateFile.js'
 
 export default async paths => {
   const stores = await findFiles('**/*.js', { cwd: paths.stores })

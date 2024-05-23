@@ -1,5 +1,5 @@
-import type from '../../../utils/type.js'
-// import uuid from '../../modules/tools/uuid';
+import type from '../../utils/type.js'
+
 class Token {
   constructor(req) {
     this.req = req

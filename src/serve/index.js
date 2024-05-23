@@ -2,8 +2,11 @@ import createApp from '@sumor/ssl-server'
 import preMiddleware from './preMiddleware/index.js'
 import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
+import prepare from '../context/index.js'
 
-export default async context => {
+export default async debug => {
+  const context = await prepare({ debug })
+  context.logger.info('开始启动对外服务')
   const app = createApp()
   app.logger = context.logger
   app.sumor = context
@@ -57,4 +60,6 @@ export default async context => {
   }
 
   app.logger.info(`应用已运行在 ${app.sumor.origin}`)
+
+  context.logger.info('对外服务启动完成')
 }

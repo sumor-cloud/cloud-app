@@ -1,6 +1,6 @@
-import database from '../modules/db/index.js'
-import loadConfig from '../../../src/context/loadConfig.js'
-import loadMeta from '../../../src/context/loadMeta.js'
+import database from './modules/db/index.js'
+import loadConfig from './context/loadConfig.js'
+import loadMeta from './context/loadMeta.js'
 import Logger from '@sumor/logger'
 
 export default async () => {

@@ -13,7 +13,7 @@ export default options => {
   context.getContext = () => ({ ...middlewares })
 
   context.setContext({
-    mode: options.mode || 'production'
+    mode: options.debug ? 'development' : 'production'
   })
 
   context.root = process.cwd()

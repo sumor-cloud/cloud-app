@@ -1,5 +1,5 @@
 import { findReference } from '@sumor/config'
-import updateFile from '../../../utils/updateFile.js'
+import updateFile from '../../utils/updateFile.js'
 
 export default async (context, paths) => {
   const pageRouteStrings = []

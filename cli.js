@@ -3,9 +3,11 @@ import { Command } from 'commander'
 import fse from 'fs-extra'
 
 import root from './root.js'
-import cmdCover from './legacy/utils/cmdCover.js'
-import app from './legacy/app/index.js'
-import setup from './legacy/app/entry/setup.js'
+import cmdCover from './src/utils/cmdCover.js'
+import setup from './src/setup.js'
+import dev from './src/dev.js'
+import build from './src/build.js'
+import serve from './src/serve/index.js'
 
 const program = new Command()
 
@@ -19,16 +21,15 @@ program
   .command('dev')
   .description('开发')
   .action(async () => {
-    await app({ mode: 'development' })
+    await dev()
+    await serve(true)
   })
 
 program
   .command('build')
   .description('打包')
   .action(async () => {
-    await app({
-      mode: 'build'
-    })
+    await build()
   })
 
 program
@@ -41,14 +42,14 @@ program
   .command('preview')
   .description('试运行')
   .action(async () => {
-    await app({ mode: 'build' })
-    await app({ mode: 'production' })
+    await build()
+    await serve()
   })
 program
   .command('run')
   .description('运行')
   .action(async () => {
-    await app({ mode: 'production' })
+    await serve()
   })
 
 program.parse(process.argv)

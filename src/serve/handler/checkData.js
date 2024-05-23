@@ -1,5 +1,5 @@
 import { validate, format } from '@sumor/validator'
-import CloudAppError from '../../../../src/CloudAppError.js'
+import CloudAppError from '../../CloudAppError.js'
 
 export default (data, meta) => {
   let errors = []

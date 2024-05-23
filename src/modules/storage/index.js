@@ -6,8 +6,7 @@ import fromStream from './fromStream.js'
 import getStreamMeta from './getStreamMeta.js'
 
 export default class Storage {
-  constructor(config, logger) {
-    this._logger = logger
+  constructor(config) {
     if (config) {
       switch (config.type) {
         case 'aliyunOSS':

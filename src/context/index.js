@@ -1,11 +1,12 @@
+import Logger from '@sumor/logger'
 import prepareContext from './prepareContext.js'
 import tools from '../modules/tools/index.js'
-import loadConfig from '../../../src/context/loadConfig.js'
 import prepareDatabase from './prepareDatabase.js'
-import Logger from '@sumor/logger'
-import loadMeta from '../../../src/context/loadMeta.js'
+import loadConfig from './loadConfig.js'
+import loadMeta from './loadMeta.js'
 
 export default async options => {
+  options = options || {}
   const context = prepareContext(options)
 
   // 获取配置信息

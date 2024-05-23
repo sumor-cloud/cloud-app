@@ -1,13 +1,17 @@
 import chokidar from 'chokidar'
 
-import singleThreadCaller from '../../utils/singleThreadCaller.js'
+import singleThreadCaller from './utils/singleThreadCaller.js'
 
-import getWebConfig from '../web/index.js'
-import generate from '../web/generate/index.js'
+import getWebConfig from './web/index.js'
+import generate from './web/generate/index.js'
 
 import { createServer, defineConfig } from 'vite'
+import prepare from './context/index.js'
 
-export default async context => {
+export default async options => {
+  const context = await prepare(options)
+  context.logger.info('开始准备开发环境')
+
   const { getLogger, root } = context
   const logger = getLogger('DEV')
 
@@ -32,4 +36,6 @@ export default async context => {
   const viteDevServer = await createServer(defineConfig(viteConfig))
   await viteDevServer.listen()
   viteDevServer.printUrls()
+
+  context.logger.info('开发环境准备完成')
 }
