@@ -5,7 +5,7 @@ import { pathToFileURL } from 'url'
 
 export default async app => {
   const exposeRoot = '/'
-  const webPath = path.resolve(process.cwd(), './output/web')
+  const webPath = path.resolve(process.cwd(), './output')
   if (await fse.exists(webPath)) {
     const indexFile = await fse.readFile(`${webPath}/client/index.html`, 'utf-8')
 

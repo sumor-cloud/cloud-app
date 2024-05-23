@@ -5,8 +5,8 @@ import fse from 'fs-extra'
 import root from './root.js'
 import cmdCover from './src/utils/cmdCover.js'
 import setup from './src/setup.js'
-import dev from './src/dev.js'
-import build from './src/build.js'
+import webServe from './src/web/dev.js'
+import webBuild from './src/web/build.js'
 import serve from './src/serve/index.js'
 
 const program = new Command()
@@ -21,7 +21,7 @@ program
   .command('dev')
   .description('开发')
   .action(async () => {
-    await dev()
+    await webServe()
     await serve(true)
   })
 
@@ -29,7 +29,7 @@ program
   .command('build')
   .description('打包')
   .action(async () => {
-    await build()
+    await webBuild()
   })
 
 program
@@ -42,7 +42,7 @@ program
   .command('preview')
   .description('试运行')
   .action(async () => {
-    await build()
+    await webBuild()
     await serve()
   })
 program

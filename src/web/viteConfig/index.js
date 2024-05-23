@@ -4,15 +4,14 @@ import pluginRewriteAll from 'vite-plugin-rewrite-all'
 import customStyle from './customStyle/index.js'
 import { pathToFileURL } from 'url'
 
-export default async (context, paths) => {
+export default async ({ config, port }) => {
   let viteConfig = {}
   if (await fse.exists(process.cwd() + '/vite.config.js')) {
     viteConfig = (await import(pathToFileURL(process.cwd() + '/vite.config.js'))).default
   }
 
-  const styleVars = context.config.styleVars
+  const styleVars = config.styleVars
   const css = customStyle(styleVars)
-  const port = context.port + 1
 
   await fse.remove(process.cwd() + '/tmp/web/.vite')
   await fse.ensureDir(process.cwd() + '/tmp/web/.vite')
@@ -26,10 +25,12 @@ export default async (context, paths) => {
     },
     viteConfig
   )
-  viteConfig.server = Object.assign({}, viteConfig.server, {
-    server: { middlewareMode: 'html' },
-    port
-  })
+  if (port) {
+    viteConfig.server = Object.assign({}, viteConfig.server, {
+      server: { middlewareMode: 'html' },
+      port
+    })
+  }
   viteConfig.plugins = [pluginRewriteAll(), vuePlugin()].concat(viteConfig.plugins)
   viteConfig.css = Object.assign({}, viteConfig.css, css)
   viteConfig.build = Object.assign({}, viteConfig.build)

@@ -1,12 +1,10 @@
 import chokidar from 'chokidar'
 
-import singleThreadCaller from './utils/singleThreadCaller.js'
-
-import getWebConfig from './web/index.js'
-import generate from './web/generate/index.js'
-
+import singleThreadCaller from '../utils/singleThreadCaller.js'
+import generate from './generate/index.js'
 import { createServer, defineConfig } from 'vite'
-import prepare from './context/index.js'
+import prepare from '../context/index.js'
+import getViteConfig from './viteConfig/index.js'
 
 export default async options => {
   const context = await prepare(options)
@@ -32,7 +30,10 @@ export default async options => {
     await watch()
   })
 
-  const viteConfig = await getWebConfig(context)
+  const viteConfig = await getViteConfig({
+    config: context.config,
+    port: context.port + 1
+  })
   const viteDevServer = await createServer(defineConfig(viteConfig))
   await viteDevServer.listen()
   viteDevServer.printUrls()

@@ -1,7 +1,7 @@
-import getWebViteConfig from './web/index.js'
-import generate from './web/generate/index.js'
+import generate from './generate/index.js'
 import { build, defineConfig } from 'vite'
-import prepare from './context/index.js'
+import prepare from '../context/index.js'
+import getViteConfig from './viteConfig/index.js'
 
 export default async options => {
   const context = await prepare(options)
@@ -10,16 +10,20 @@ export default async options => {
   await generate(context, true)
 
   // 构建客户端
-  const viteClientConfig = await getWebViteConfig(context)
+  const viteClientConfig = await getViteConfig({
+    config: context.config
+  })
   viteClientConfig.build.ssrManifest = true
-  viteClientConfig.build.outDir = '../../output/web/client'
+  viteClientConfig.build.outDir = '../../output/client'
   viteClientConfig.build.emptyOutDir = true
   await build(defineConfig(viteClientConfig))
 
   // 构建服务端
-  const viteServerConfig = await getWebViteConfig(context)
+  const viteServerConfig = await getViteConfig({
+    config: context.config
+  })
   viteServerConfig.build.ssr = 'src/entry-server.js'
-  viteServerConfig.build.outDir = '../../output/web/server'
+  viteServerConfig.build.outDir = '../../output/server'
   viteServerConfig.build.emptyOutDir = true
   await build(defineConfig(viteServerConfig))
 

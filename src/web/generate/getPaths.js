@@ -1,8 +1,8 @@
 import path from 'path'
 import fse from 'fs-extra'
 
-export default async context => {
-  const root = context.root
+export default async () => {
+  const root = process.cwd()
   const paths = {
     root,
     pages: path.join(root, '/web/pages'),
