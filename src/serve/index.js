@@ -3,10 +3,16 @@ import preMiddleware from './preMiddleware/index.js'
 import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import prepare from '../context/index.js'
+import addDatabase from './addDatabase.js'
 
 export default async debug => {
   const context = await prepare({ debug })
   context.logger.info('开始启动对外服务')
+
+  if (context.config.database) {
+    await addDatabase(context)
+  }
+
   const app = createApp()
   app.logger = context.logger
   app.sumor = context

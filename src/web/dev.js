@@ -1,6 +1,6 @@
 import chokidar from 'chokidar'
 
-import singleThreadCaller from '../utils/singleThreadCaller.js'
+import singleThreadCaller from './singleThreadCaller.js'
 import generate from './generate/index.js'
 import { createServer, defineConfig } from 'vite'
 import prepare from '../context/index.js'

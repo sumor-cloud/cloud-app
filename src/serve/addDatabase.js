@@ -8,5 +8,9 @@ export default async context => {
     config,
     logger
   })
-  return async sessionLogger => await dbPool.connect(sessionLogger || logger)
+  const connectDB = async sessionLogger => await dbPool.connect(sessionLogger || logger)
+
+  context.setContext({
+    connectDB
+  })
 }
