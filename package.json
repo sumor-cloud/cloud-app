@@ -23,7 +23,6 @@
     "@sumor/logger": "^1.2.0",
     "@sumor/ssl-server": "^1.0.21",
     "@sumor/error": "^1.0.3",
-    "@alicloud/sms-sdk": "^1.1.6",
     "@vitejs/plugin-vue": "^4.2.3",
     "ali-oss": "^6.20.0",
     "axios": "^1.4.0",
@@ -47,9 +46,6 @@
     "vite": "^4.4.9",
     "vite-plugin-rewrite-all": "^1.0.1",
     "yaml": "^2.3.2"
-  },
-  "overrides": {
-    "xml2js": "latest"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

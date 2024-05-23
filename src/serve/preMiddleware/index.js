@@ -10,7 +10,6 @@ import token from './token.js'
 import database from './database.js'
 import loadResponse from './loadResponse.js'
 import storage from './storage.js'
-import sms from './sms.js'
 import wechat from './wechat.js'
 
 export default async app => {
@@ -26,6 +25,5 @@ export default async app => {
   await database(app)
   await token(app)
   await storage(app)
-  await sms(app)
   await wechat(app)
 }
