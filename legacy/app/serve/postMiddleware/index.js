@@ -11,7 +11,7 @@ export default async app => {
   await sendResponse(app)
   await staticParser(app)
   if (app.sumor.mode === 'development') {
-    const uiOrigin = `http://localhost:${app.sumor.uiPort}`
+    const uiOrigin = `http://localhost:${app.sumor.port + 1}`
     app.use(
       '*',
       createProxyMiddleware({

@@ -12,7 +12,7 @@ export default async (context, paths) => {
 
   const styleVars = context.config.styleVars
   const css = customStyle(styleVars)
-  const port = context.uiPort
+  const port = context.port + 1
 
   await fse.remove(process.cwd() + '/tmp/web/.vite')
   await fse.ensureDir(process.cwd() + '/tmp/web/.vite')

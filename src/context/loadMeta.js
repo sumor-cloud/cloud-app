@@ -1,6 +1,5 @@
-import { find, findReference } from '@sumor/config'
-import formatter from '../../legacy/app/prepare/meta/formatter.js'
-import loadFiles from '../../legacy/utils/loadFiles.js'
+import { find, findReference, findReferenceData } from '@sumor/config'
+import formatter from './formatter.js'
 import { pathToFileURL } from 'url'
 import libRoot from '../../root.js'
 
@@ -36,39 +35,62 @@ export default async root => {
     }
   }
 
-  const viewSql = await loadFiles(`${root}/view`, 'view', 'sql')
-  for (const i in viewSql) {
-    meta.view[i] = formatter.view(meta.view[i])
-    meta.view[i] = Object.assign(meta.view[i], viewSql[i])
+  const viewMeta = await findReferenceData(`${root}/view`, ['sql'])
+  for (const view in viewMeta) {
+    viewMeta[view] = viewMeta[view] || {}
+    meta.view[view] = viewMeta[view]
   }
-
-  // // 获取api程序对象文件
-  // const apiRootPath = `${root}/api`
-  // if (await fse.exists(apiRootPath)) {
-  //   const programList = await findFiles('**/**.js', { cwd: apiRootPath })
-  //   for (const item of programList) {
-  //     const itemPath = parseFileName(item)
-  //     const route = `api.${itemPath.path}`
-  //     const filePath = `${apiRootPath}/${item}`
-  //     meta.api[route] = meta.api[route] || {}
-  //     meta.api[route].program = (await import(pathToFileURL(filePath))).default
-  //   }
-  // }
 
   const loadApis = async (root, prefix = '') => {
     const apiMeta = await findReference(root, ['js'])
     for (const path in apiMeta) {
       apiMeta[path] = apiMeta[path] || {}
       const item = apiMeta[path]
+      const route = path.replace(/\//g, '.')
       const filePath = `${root}/${path}.js`
       item.program = (await import(pathToFileURL(filePath))).default
-      meta.api[`${prefix}${path.replace(/\//g, '.')}`] = item
+      meta.api[`${prefix}${route}`] = item
     }
   }
+
   // 获取api程序对象文件
   await loadApis(`${root}/api`, 'api.')
+
   // 获取sumor api程序对象文件
   await loadApis(`${libRoot}/template/api`)
 
+  // 获取event程序对象文件
+  const eventRootPath = `${root}/event`
+  const eventMeta = await findReference(eventRootPath, ['js'])
+  for (const path in eventMeta) {
+    eventMeta[path] = eventMeta[path] || {}
+    const item = eventMeta[path]
+    const route = path.replace(/\//g, '.')
+    const filePath = `${eventRootPath}/${path}.js`
+    const eventProgram = (await import(pathToFileURL(filePath))).default
+    item.program = async context => {
+      context.logger.trace(`正在执行事件${route}`)
+      let newContext = { ...context }
+      let standaloneDB
+      if (!context.db) {
+        standaloneDB = await context.connectDB()
+        newContext = Object.assign(newContext, { db: standaloneDB })
+      }
+      try {
+        await eventProgram(newContext || context)
+        if (standaloneDB) {
+          await standaloneDB.commit()
+        }
+        context.logger.debug(`事件${route}完成`)
+      } catch (e) {
+        if (standaloneDB) {
+          await standaloneDB.rollback()
+        }
+        context.logger.error(`事件${route}执行失败，${e.message}`)
+        context.logger.trace(e)
+      }
+    }
+    meta.event[path] = item
+  }
   return meta
 }
