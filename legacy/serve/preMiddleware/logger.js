@@ -1,3 +1,4 @@
+import Logger from '@sumor/logger'
 let requestSequence = 0
 
 export default app => {
@@ -5,7 +6,14 @@ export default app => {
     const current = ++requestSequence
 
     req.sumor.ip = req.headers['x-forwarded-for'] || '0.0.0.0'
-    req.sumor.getLogger = scope => app.sumor.getLogger(scope, current)
+    req.sumor.getLogger = scope => {
+      return new Logger({
+        scope,
+        level: req.sumor.logLevel,
+        language: req.sumor.language,
+        id: current
+      })
+    }
 
     req.sumor.logger = req.sumor.getLogger('PROGRAM')
 

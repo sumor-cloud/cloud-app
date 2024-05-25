@@ -1,8 +1,8 @@
 import operator from '../modules/db/operator/index.js'
 
-export default async context => {
-  const config = context.config.database
-  const logger = context.getLogger('DATABASE')
+export default async runtime => {
+  const config = runtime.config.database
+  const logger = runtime.getLogger('DATABASE')
 
   const dbPool = await operator({
     config,
@@ -10,7 +10,7 @@ export default async context => {
   })
   const connectDB = async sessionLogger => await dbPool.connect(sessionLogger || logger)
 
-  context.setContext({
+  runtime.setContext({
     connectDB
   })
 }
