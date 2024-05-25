@@ -168,27 +168,7 @@ class Token {
   async destroy() {
     this._id = null
     await this.save()
-    // if (this.id !== '') {
-    //   await this.req.sumor.cache.set('token', this.id, undefined);
-    //   delete this.req.sumor.cookie.t;
-    // }
   }
-
-  // async load () {
-  //   if (this.id !== '') {
-  //     let res = await this.req.sumor.cache.get('token', this.id);
-  //     if (res) {
-  //       res = JSON.parse(res);
-  //       this._user = res.user || null;
-  //       this._time = res.time || 0;
-  //       this._data = res.data || {};
-  //       this._permission = res.permission || {};
-  //     } else {
-  //       this._id = null;
-  //       this.req.sumor.cookie.t = this._id;
-  //     }
-  //   }
-  // }
 
   async save() {
     this.req.sumor.cookie.t = this._id
@@ -205,10 +185,7 @@ export default async app => {
     if (matched) {
       req.sumor.token = new Token(req)
       if (app.sumor.meta.event.token) {
-        req.sumor.token.load = async () => {
-          await app.sumor.meta.event.token.program(req.sumor, req, res)
-        }
-        await req.sumor.token.load()
+        await app.sumor.meta.event.token.program(req.sumor, req, res)
       }
       if (req.sumor.token.user && req.sumor.db) {
         req.sumor.db.setUser(req.sumor.token.user)

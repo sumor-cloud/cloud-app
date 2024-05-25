@@ -17,19 +17,7 @@ export default async app => {
       createProxyMiddleware({
         target: uiOrigin,
         changeOrigin: true,
-        ws: true,
-        logProvider: function logProvider(provider) {
-          const dummyLogger = arg1 => {
-            // console.log("proxy",arg1);
-          }
-          return {
-            log: dummyLogger,
-            debug: dummyLogger,
-            info: dummyLogger,
-            warn: dummyLogger,
-            error: dummyLogger
-          }
-        }
+        ws: true
       })
     )
   }

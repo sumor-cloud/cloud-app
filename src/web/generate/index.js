@@ -3,9 +3,9 @@ import copyTemplate from './copyTemplate.js'
 import generateRoutes from './generateRoutes.js'
 import generateStores from './generateStores.js'
 
-export default async (context, force) => {
+export default async (config, force) => {
   const paths = await getPaths()
-  await copyTemplate(context, paths, force)
-  await generateRoutes(context, paths)
+  await copyTemplate(paths, force)
+  await generateRoutes(config, paths)
   await generateStores(paths)
 }

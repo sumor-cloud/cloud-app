@@ -43,10 +43,6 @@ export default async debug => {
     await app.sumor.meta.event.setup.program(app.sumor)
   }
 
-  if (app.sumor.meta.event.prepare) {
-    await app.sumor.meta.event.prepare.program(app.sumor)
-  }
-
   await handler(app)
 
   app.logger.debug('处理程序加载完成')
@@ -60,10 +56,6 @@ export default async debug => {
   app.logger.debug('后置中间件加载完成')
 
   app.sumor.close = await app.listen(app.sumor.port)
-
-  if (app.sumor.meta.event.served) {
-    await app.sumor.meta.event.served.program(app.sumor)
-  }
 
   app.logger.info(`应用已运行在 ${app.sumor.origin}`)
 

@@ -1,7 +1,7 @@
 import { findReference } from '@sumor/config'
 import updateFile from '../updateFile.js'
 
-export default async (context, paths) => {
+export default async (config, paths) => {
   const pageRouteStrings = []
   const pages = await findReference(paths.pages, ['vue'])
   for (const page in pages) {
@@ -37,7 +37,7 @@ export default async (context, paths) => {
     }
   }
 
-  const pagesConfig = context.config.pages || []
+  const pagesConfig = config.pages || []
   for (const page of pagesConfig) {
     if (page.redirect) {
       pageRouteStrings.push(`    {

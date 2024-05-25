@@ -6,7 +6,7 @@ import root from '../../../root.js'
 //             key: getSSL("./ssl/domain.key"),
 //             ca: getSSL("./ssl/ca.cer")
 //         },`;
-export default async (context, paths, force) => {
+export default async (paths, force) => {
   const template = `${root}/template/web`
   const hasIndex = await fse.exists(`${paths.tmpWeb}/index.html`)
   if (force || !hasIndex) {
@@ -21,12 +21,4 @@ export default async (context, paths, force) => {
   if (force || hasFrame) {
     await fse.copy(`${template}/AppWithFrame.vue`, `${paths.tmpWeb}/src/App.vue`)
   }
-
-  const webEnv = {
-    dark: !!context.config.dark
-  }
-  await fse.writeFile(
-    `${paths.tmpWeb}/src/env.js`,
-    `export default ${JSON.stringify(webEnv, null, 4)}`
-  )
 }

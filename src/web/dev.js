@@ -3,25 +3,27 @@ import chokidar from 'chokidar'
 import singleThreadCaller from './singleThreadCaller.js'
 import generate from './generate/index.js'
 import { createServer, defineConfig } from 'vite'
-import prepare from '../context/index.js'
 import getViteConfig from './viteConfig/index.js'
+import loadConfig from '../context/loadConfig.js'
+import Logger from '@sumor/logger'
 
 export default async options => {
-  const context = await prepare(options)
-  context.logger.info('开始准备开发环境')
-
-  const { getLogger, root } = context
-  const logger = getLogger('DEV')
+  const config = await loadConfig(process.cwd())
+  const logger = new Logger({
+    scope: 'DEV',
+    level: config.logLevel
+  })
+  logger.info('开始准备开发环境')
 
   const watch = singleThreadCaller(async force => {
-    await generate(context, force)
+    await generate(config, force)
     logger.info('代码已更新')
   })
 
   await watch(true)
   const watcher = chokidar.watch('.', {
     // ignore folders /tmp and /node_modules
-    cwd: `${root}/web`,
+    cwd: `${process.cwd()}/web`,
     ignored:
       /(^|[/\\])(tmp|node_modules|\.git|\.nuxt|\.idea|\.vscode|\.cache|\.sass-cache|\.DS_Store|\.env)/,
     persistent: true
@@ -31,12 +33,12 @@ export default async options => {
   })
 
   const viteConfig = await getViteConfig({
-    config: context.config,
-    port: context.port + 1
+    config,
+    port: config.port + 1
   })
   const viteDevServer = await createServer(defineConfig(viteConfig))
   await viteDevServer.listen()
   viteDevServer.printUrls()
 
-  context.logger.info('开发环境准备完成')
+  logger.info('开发环境准备完成')
 }

@@ -16,21 +16,15 @@ export default async options => {
   })
 
   // 准备基础参数
-  const name = config.name || '轻呈云应用'
-  const logLevel = (config.logLevel || 'info').toLowerCase()
-  const language = config.language || 'zh-CN'
   const exposeApis = {}
-  const domain = config.domain || 'localhost'
-  const port = parseInt(config.port || '443', 10)
-  const origin = config.origin || `https://${domain}${port === 443 ? '' : `:${port}`}`
   context.setContext({
-    name,
-    logLevel,
-    language,
+    name: config.name,
+    logLevel: config.logLevel,
+    language: config.language,
     exposeApis,
-    domain,
-    port,
-    origin
+    domain: config.domain,
+    port: config.port,
+    origin: config.origin
   })
 
   // 准备额外参数

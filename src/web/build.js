@@ -1,17 +1,22 @@
 import generate from './generate/index.js'
 import { build, defineConfig } from 'vite'
-import prepare from '../context/index.js'
 import getViteConfig from './viteConfig/index.js'
+import loadConfig from '../context/loadConfig.js'
+import Logger from '@sumor/logger'
 
-export default async options => {
-  const context = await prepare(options)
-  context.logger.info('开始生成生产代码')
+export default async () => {
+  const config = await loadConfig(process.cwd())
+  const logger = new Logger({
+    scope: 'BUILD',
+    level: config.logLevel
+  })
+  logger.info('开始生成生产代码')
 
-  await generate(context, true)
+  await generate(config, true)
 
   // 构建客户端
   const viteClientConfig = await getViteConfig({
-    config: context.config
+    config
   })
   viteClientConfig.build.ssrManifest = true
   viteClientConfig.build.outDir = '../../output/client'
@@ -20,12 +25,12 @@ export default async options => {
 
   // 构建服务端
   const viteServerConfig = await getViteConfig({
-    config: context.config
+    config
   })
   viteServerConfig.build.ssr = 'src/entry-server.js'
   viteServerConfig.build.outDir = '../../output/server'
   viteServerConfig.build.emptyOutDir = true
   await build(defineConfig(viteServerConfig))
 
-  context.logger.info('生产代码生成完毕')
+  logger.info('生产代码生成完毕')
 }
