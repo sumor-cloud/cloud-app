@@ -8,7 +8,6 @@ export default async app => {
   for (const path of apiPaths) {
     const route = `/${path.replace(/\./g, '/')}`
     const callback = async function (req, res, next) {
-      req.sumor.meta = app.sumor.meta
       req.sumor.cors = true
 
       // req.sumor.response.changed = true
@@ -39,11 +38,6 @@ export default async app => {
 
     const hasFile = listenApis(path, app, callback)
 
-    app.sumor.exposeApis[route] = {
-      name: app.sumor.meta.api[path].name || '',
-      desc: app.sumor.meta.api[path].desc || '',
-      parameters: app.sumor.meta.api[path].parameters || {}
-    }
     app.logger.info(`接口已就绪：${route}${hasFile ? ' (允许文件上传)' : ''}`)
   }
   app.logger.info('所有接口已就绪')

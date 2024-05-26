@@ -1,11 +1,15 @@
 export default async (context, req, res) => {
   const exposeApis = {}
-  for (const i in context.exposeApis) {
-    const api = context.exposeApis[i]
-    exposeApis[i] = {
-      name: api.name,
-      desc: api.desc,
-      parameters: api.parameters
+  const apiPaths = Object.keys(context.meta.api)
+  for (const path of apiPaths) {
+    const apiData = context.meta.api[path]
+    if (apiData) {
+      const route = `/${path.replace(/\./g, '/')}`
+      exposeApis[route] = {
+        name: apiData.name || '',
+        desc: apiData.desc || '',
+        parameters: apiData.parameters || {}
+      }
     }
   }
   return {

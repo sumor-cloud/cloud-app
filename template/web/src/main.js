@@ -5,7 +5,6 @@ import App from './App.vue'
 import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import routes from '../routes.js'
 import stores from '../stores.js'
-import env from './env.js'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -27,6 +26,5 @@ export async function createApp() {
   app.config.globalProperties.$store = name => {
     return stores[name]()
   }
-  app.config.globalProperties.$env = env
   return { app, router }
 }

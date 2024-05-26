@@ -2,14 +2,15 @@ import createApp from '@sumor/ssl-server'
 import preMiddleware from './preMiddleware/index.js'
 import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
-import prepare from './prepare/index.js'
+import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
-import loadConfig from '../context/loadConfig.js'
+import loadConfig from '../../src/config/loadConfig.js'
 import appLogger from '../../src/i18n/appLogger.js'
+import loadMeta from '../../src/config/loadMeta.js'
+import getRuntime from '../../src/runtime/getRuntime.js'
+import tools from '../modules/tools/index.js'
 
 export default async debug => {
-  const app = createApp()
-
   // Fetch config and logger
   const config = await loadConfig(process.cwd())
   const logger = appLogger(config.logLevel, config.language)
@@ -17,15 +18,48 @@ export default async debug => {
   logger.code('SUMOR_APP_CONFIG_INFO', { config: JSON.stringify(config, null, 4) })
 
   // Fetch runtime
-  const runtime = await prepare({ debug, config })
+  const runtime = getRuntime()
+  runtime.root = process.cwd()
+
+  // Prepare runtime context
+  runtime.setContext({
+    mode: debug ? 'development' : 'production',
+    tools,
+    config,
+    name: config.name,
+    logLevel: config.logLevel,
+    language: config.language,
+    domain: config.domain,
+    port: config.port,
+    origin: config.origin
+  })
+
+  // 准备额外参数
+  const getLogger = (scope, id) =>
+    new Logger({
+      scope,
+      level: runtime.config.logLevel,
+      language: runtime.config.language,
+      id
+    })
+
+  runtime.setContext({
+    getLogger,
+    logger: getLogger('RUNTIME')
+  })
   logger.code('SUMOR_APP_DEFAULT_LANGUAGE', { language: runtime.language })
   logger.code('SUMOR_APP_RUNTIME_OBJECTS', { keys: Object.keys(runtime).join(', ') })
+
+  // 加载接口
+  const meta = await loadMeta(runtime.root)
+  runtime.setContext({ meta })
 
   // Add database
   if (runtime.config.database) {
     await addDatabase(runtime)
   }
 
+  const app = createApp()
   app.logger = logger
   app.sumor = runtime
   app.sumor.app = app
