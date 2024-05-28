@@ -1,4 +1,4 @@
-import database from './modules/db/index.js'
+import { install } from './modules/db/index.js'
 import loadConfig from '../src/config/loadConfig.js'
 import loadMeta from '../src/config/loadMeta.js'
 import Logger from '@sumor/logger'
@@ -11,7 +11,7 @@ export default async () => {
     level: config.logLevel
   })
   logger.info('开始部署数据库')
-  await database.install({
+  await install({
     config: config.database,
     logger,
     entity: meta.entity,

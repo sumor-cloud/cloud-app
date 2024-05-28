@@ -1,5 +1,4 @@
-import database from '../db/index.js'
-import operator from '../db/operator/index.js'
+import { install, operator } from '../db/index.js'
 
 export default async (config, logger) => {
   const type = config.type || 'sqlite'
@@ -19,7 +18,7 @@ export default async (config, logger) => {
       }
     })
   } else {
-    await database.install({
+    await install({
       config,
       logger,
       entity: {

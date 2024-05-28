@@ -1,4 +1,4 @@
-import operator from '../modules/db/operator/index.js'
+import { operator } from '../modules/db/index.js'
 
 export default async runtime => {
   const config = runtime.config.database
