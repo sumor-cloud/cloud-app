@@ -18,9 +18,7 @@ export default async (config, logger) => {
       }
     })
   } else {
-    await database.install({
-      config,
-      logger,
+    await database.install(config, {
       entity: {
         cache: {
           property: {

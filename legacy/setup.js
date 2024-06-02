@@ -11,9 +11,7 @@ export default async () => {
     level: config.logLevel
   })
   logger.info('开始部署数据库')
-  await database.install({
-    config: config.database,
-    logger,
+  await database.install(config.database, {
     entity: meta.entity,
     view: meta.view
   })

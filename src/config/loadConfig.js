@@ -14,6 +14,7 @@ export default async root => {
   config.language = config.language || 'en-US'
 
   process.env.LANGUAGE = config.language
+  process.env.LOG_LEVEL = config.logLevel
 
   return config
 }

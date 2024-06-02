@@ -1,4 +1,3 @@
-// import { operator } from '../modules/db/index.js'
 import database from '@sumor/database'
 
 export default async runtime => {
