@@ -47,7 +47,7 @@ export default async debug => {
     getLogger,
     logger: getLogger('RUNTIME')
   })
-  logger.code('SUMOR_APP_DEFAULT_LANGUAGE', { language: runtime.language })
+  logger.code('SUMOR_APP_ORIGIN_LANGUAGE', { language: runtime.language })
   logger.code('SUMOR_APP_RUNTIME_OBJECTS', { keys: Object.keys(runtime).join(', ') })
 
   // 加载接口

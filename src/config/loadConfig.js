@@ -13,5 +13,7 @@ export default async root => {
     config.origin || `https://${config.domain}${config.port === 443 ? '' : `:${config.port}`}`
   config.language = config.language || 'en-US'
 
+  process.env.LANGUAGE = config.language
+
   return config
 }

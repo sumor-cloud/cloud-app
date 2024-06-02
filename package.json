@@ -20,10 +20,10 @@
   "dependencies": {
     "@sumor/config": "^1.2.1",
     "@sumor/validator": "^1.0.6",
-    "@sumor/logger": "^1.2.2",
+    "@sumor/logger": "^1.2.4",
     "@sumor/ssl-server": "^1.0.21",
     "@sumor/error": "^1.0.3",
-    "@sumor/database": "^1.0.0",
+    "@sumor/database": "^1.0.2",
     "@vitejs/plugin-vue": "^4.2.3",
     "ali-oss": "^6.20.0",
     "axios": "^1.4.0",
@@ -84,6 +84,6 @@
     "publish-release-minor": "npm version minor && npm run push-tag",
     "publish-release-major": "npm version major && npm run push-tag",
     "prepare": "husky",
-    "check": "eslint --fix . && prettier --write . && npm audit fix --force && npm run coverage"
+    "check": "npm run autofix && npm run coverage"
   }
 }
