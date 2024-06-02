@@ -23,6 +23,7 @@
     "@sumor/logger": "^1.2.2",
     "@sumor/ssl-server": "^1.0.21",
     "@sumor/error": "^1.0.3",
+    "@sumor/database": "^1.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "ali-oss": "^6.20.0",
     "axios": "^1.4.0",

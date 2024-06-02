@@ -1,4 +1,4 @@
-import { install, operator } from '../db/index.js'
+import database from '@sumor/database'
 
 export default async (config, logger) => {
   const type = config.type || 'sqlite'
@@ -18,7 +18,7 @@ export default async (config, logger) => {
       }
     })
   } else {
-    await install({
+    await database.install({
       config,
       logger,
       entity: {
@@ -31,10 +31,7 @@ export default async (config, logger) => {
         }
       }
     })
-    const pool = await operator({
-      config,
-      logger
-    })
+    const pool = await database.client(config)
     getCacheMethods = logger => ({
       get: async (namespace, key) => {
         const db = await pool.connect(logger)

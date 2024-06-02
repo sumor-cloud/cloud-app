@@ -1,13 +1,11 @@
-import { operator } from '../modules/db/index.js'
+// import { operator } from '../modules/db/index.js'
+import database from '@sumor/database'
 
 export default async runtime => {
   const config = runtime.config.database
   const logger = runtime.getLogger('DATABASE')
 
-  const dbPool = await operator({
-    config,
-    logger
-  })
+  const dbPool = await database.client(config)
   const connectDB = async sessionLogger => await dbPool.connect(sessionLogger || logger)
 
   runtime.setContext({
