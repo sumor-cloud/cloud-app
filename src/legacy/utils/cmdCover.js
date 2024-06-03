@@ -1,4 +1,4 @@
-import root from '../../root.js'
+import root from '../../../root.js'
 export default version => {
   console.log(`
 =================================================================
