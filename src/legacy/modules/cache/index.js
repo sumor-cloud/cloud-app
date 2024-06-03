@@ -1,6 +1,6 @@
 import database from '@sumor/database'
 
-export default async (config) => {
+export default async config => {
   const type = config.type || 'sqlite'
 
   let getCacheMethods
