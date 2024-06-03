@@ -4,13 +4,13 @@ let requestSequence = 0
 export default app => {
   app.use((req, res, next) => {
     const current = ++requestSequence
+    req.sumor.loggerId = current
 
     req.sumor.ip = req.headers['x-forwarded-for'] || '0.0.0.0'
+
     req.sumor.getLogger = scope => {
       return new Logger({
         scope,
-        level: req.sumor.logLevel,
-        language: req.sumor.language,
         id: current
       })
     }

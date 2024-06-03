@@ -1,6 +1,6 @@
 import database from '@sumor/database'
 
-export default async (config, logger) => {
+export default async (config) => {
   const type = config.type || 'sqlite'
 
   let getCacheMethods
@@ -29,20 +29,20 @@ export default async (config, logger) => {
         }
       }
     })
-    const pool = await database.client(config)
-    getCacheMethods = logger => ({
+    const client = await database.client(config)
+    getCacheMethods = loggerId => ({
       get: async (namespace, key) => {
-        const db = await pool.connect(logger)
+        const db = await client.connect(loggerId)
         const result = await db.single('cache', { namespace, key })
         await db.commit()
         if (result) {
-          logger.trace(`读取缓存${namespace} ${key}。数据为${result.value}`)
+          // logger.trace(`读取缓存${namespace} ${key}。数据为${result.value}`)
           return result.value
         }
-        logger.trace(`读取缓存${namespace} ${key}。数据为空`)
+        // logger.trace(`读取缓存${namespace} ${key}。数据为空`)
       },
       set: async (namespace, key, value) => {
-        const db = await pool.connect(logger)
+        const db = await client.connect(loggerId)
         try {
           if (value) {
             await db.modify('cache', ['namespace', 'key'], { namespace, key, value })
@@ -50,11 +50,11 @@ export default async (config, logger) => {
             await db.delete('cache', { namespace, key })
           }
           await db.commit()
-          logger.trace(`写入缓存${namespace} ${key}成功。数据为${value}`)
+          // logger.trace(`写入缓存${namespace} ${key}成功。数据为${value}`)
         } catch (e) {
           await db.rollback()
-          logger.trace(`写入缓存${namespace} ${key}失败。数据为${value}`)
-          logger.error(e)
+          // logger.trace(`写入缓存${namespace} ${key}失败。数据为${value}`)
+          // logger.error(e)
         }
       }
     })

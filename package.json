@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@sumor/config": "^1.2.1",
-    "@sumor/database": "^1.1.0",
+    "@sumor/database": "^1.1.2",
     "@sumor/error": "^1.0.3",
     "@sumor/logger": "^1.2.5",
     "@sumor/ssl-server": "^1.0.21",
@@ -42,7 +42,6 @@
     "multer": "^1.4.5-lts.1",
     "serve-static": "^1.14.1",
     "spdy": "^4.0.2",
-    "uuid": "^3.3.2",
     "vite": "^4.4.9",
     "vite-plugin-rewrite-all": "^1.0.1",
     "yaml": "^2.3.2"

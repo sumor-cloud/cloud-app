@@ -2,14 +2,12 @@ import getCache from '../../modules/cache/index.js'
 
 export default async app => {
   const config = app.sumor.config.cache || {}
-  const logger = app.sumor.getLogger('CACHE')
-  const cache = await getCache(config, logger)
+  const cache = await getCache(config)
 
-  app.sumor.cache = cache(logger)
+  app.sumor.cache = cache()
 
   app.use(async (req, res, next) => {
-    const logger = req.sumor.getLogger('CACHE')
-    req.sumor.cache = cache(logger)
+    req.sumor.cache = cache(req.sumor.loggerId)
     next()
   })
 }

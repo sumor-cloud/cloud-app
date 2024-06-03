@@ -1,3 +1,5 @@
-import uuidLib from 'uuid'
+import crypto from 'crypto'
 
-export default () => uuidLib.v4().replace(/-/g, '')
+export default () => {
+  return crypto.randomUUID().replace(/-/g, '')
+}
