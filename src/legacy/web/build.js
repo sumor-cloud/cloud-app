@@ -1,7 +1,7 @@
 import generate from './generate/index.js'
 import { build, defineConfig } from 'vite'
 import getViteConfig from './viteConfig/index.js'
-import loadConfig from '../../src/config/loadConfig.js'
+import loadConfig from '../../../src/config/loadConfig.js'
 import Logger from '@sumor/logger'
 
 export default async () => {

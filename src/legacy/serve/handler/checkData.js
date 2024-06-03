@@ -1,5 +1,5 @@
 import { validate, format } from '@sumor/validator'
-import APIMiddlewareError from '../../../src/i18n/APIMiddlewareError.js'
+import APIMiddlewareError from '../../../../src/i18n/APIMiddlewareError.js'
 
 export default (data, meta) => {
   let errors = []
