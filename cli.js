@@ -3,11 +3,11 @@ import { Command } from 'commander'
 import fse from 'fs-extra'
 
 import root from './root.js'
-import cmdCover from './legacy/utils/cmdCover.js'
-import setup from './legacy/setup.js'
-import webServe from './legacy/web/dev.js'
-import webBuild from './legacy/web/build.js'
-import serve from './legacy/serve/index.js'
+import cmdCover from './src/legacy/utils/cmdCover.js'
+import setup from './src/legacy/setup.js'
+import webServe from './src/legacy/web/dev.js'
+import webBuild from './src/legacy/web/build.js'
+import serve from './src/legacy/serve/index.js'
 
 const program = new Command()
 
