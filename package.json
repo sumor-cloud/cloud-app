@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@sumor/config": "^1.2.1",
-    "@sumor/database": "^1.1.2",
+    "@sumor/database": "^1.2.1",
     "@sumor/error": "^1.0.3",
     "@sumor/logger": "^1.2.5",
     "@sumor/ssl-server": "^1.0.21",

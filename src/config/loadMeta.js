@@ -5,7 +5,7 @@ import libRoot from '../../root.js'
 
 export default async root => {
   const meta = {}
-  const categories = ['text', 'rule', 'type', 'entity', 'view', 'api', 'event']
+  const categories = ['api', 'event']
   for (const category of categories) {
     let type = category
     meta[category] = meta[category] || {}
@@ -33,12 +33,6 @@ export default async root => {
         meta[category][name] = formatter[type](meta[category][name], meta, name)
       }
     }
-  }
-
-  const viewMeta = await findReferenceData(`${root}/view`, ['sql'])
-  for (const view in viewMeta) {
-    viewMeta[view] = viewMeta[view] || {}
-    meta.view[view] = viewMeta[view]
   }
 
   const loadApis = async (root, prefix = '') => {
