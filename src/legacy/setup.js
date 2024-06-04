@@ -9,6 +9,6 @@ export default async () => {
     level: config.logLevel
   })
   logger.info('开始部署数据库')
-  await database.install(config.database, process.cwd()+"/data")
+  await database.install(config.database, process.cwd() + '/data')
   logger.info('部署数据库完成')
 }

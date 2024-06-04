@@ -1,4 +1,4 @@
-import { find, findReference, findReferenceData } from '@sumor/config'
+import { find, findReference } from '@sumor/config'
 import formatter from './formatter.js'
 import { pathToFileURL } from 'url'
 import libRoot from '../../root.js'

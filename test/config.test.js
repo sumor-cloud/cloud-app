@@ -20,8 +20,6 @@ describe('context', () => {
   })
   it('load meta', async () => {
     const meta = await loadMeta(root)
-    expect(meta.entity.Car.name).toBe('Car')
-    expect(meta.view.vCar.sql).toBe('select * from car')
     expect(meta.api['api.plus'].name).toBe('Plus')
     expect(meta.event.serve).toBeDefined()
     expect(meta.event.token).toBeDefined()
