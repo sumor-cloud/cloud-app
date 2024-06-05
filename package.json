@@ -18,7 +18,7 @@
     "sca": "cli.js"
   },
   "dependencies": {
-    "@sumor/config": "^1.2.1",
+    "@sumor/config": "^1.2.6",
     "@sumor/database": "^1.2.1",
     "@sumor/error": "^1.0.3",
     "@sumor/logger": "^1.2.5",
