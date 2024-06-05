@@ -1,13 +1,13 @@
 import { validate, format } from '@sumor/validator'
-import APIMiddlewareError from '../../../../src/i18n/APIMiddlewareError.js'
+import APIMiddlewareError from '../../i18n/APIMiddlewareError.js'
 
-export default (data, meta) => {
+export default (data, apiInfo) => {
   let errors = []
-  for (const key in meta.parameters) {
-    data[key] = format(meta.parameters[key], data[key])
+  for (const key in apiInfo.parameters) {
+    data[key] = format(apiInfo.parameters[key], data[key])
     const fieldErrors = validate(
       {
-        ...meta.parameters[key],
+        ...apiInfo.parameters[key],
         error: true
       },
       data[key]

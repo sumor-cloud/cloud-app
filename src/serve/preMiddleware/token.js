@@ -177,15 +177,15 @@ class Token {
 
 export default async app => {
   app.use(async (req, res, next) => {
-    const apiPaths = Object.keys(app.sumor.meta.api)
+    const apiPaths = Object.keys(app.program.api)
     const matched =
       apiPaths.filter(path => {
         return req.path === `/${path.replace(/\./g, '/')}`
       }).length > 0
     if (matched) {
       req.sumor.token = new Token(req)
-      if (app.sumor.meta.event.token) {
-        await app.sumor.meta.event.token.program(req.sumor, req, res)
+      if (app.program.event.token) {
+        await app.program.event.token.program(req.sumor, req, res)
       }
       if (req.sumor.token.user && req.sumor.db) {
         req.sumor.db.setUser(req.sumor.token.user)

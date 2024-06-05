@@ -4,11 +4,11 @@ import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
-import loadConfig from '../../../src/config/loadConfig.js'
-import appLogger from '../../../src/i18n/appLogger.js'
-import loadMeta from '../../../src/config/loadMeta.js'
-import getRuntime from '../../../src/runtime/getRuntime.js'
+import loadConfig from '../config/loadConfig.js'
+import appLogger from '../i18n/appLogger.js'
+import getRuntime from '../runtime/getRuntime.js'
 import tools from '../modules/tools/index.js'
+import loadProgram from './loadProgram.js'
 
 export default async debug => {
   // Fetch config and logger
@@ -50,10 +50,6 @@ export default async debug => {
   logger.code('SUMOR_APP_ORIGIN_LANGUAGE', { language: runtime.language })
   logger.code('SUMOR_APP_RUNTIME_OBJECTS', { keys: Object.keys(runtime).join(', ') })
 
-  // 加载接口
-  const meta = await loadMeta(runtime.root)
-  runtime.setContext({ meta })
-
   // Add database
   if (runtime.config.database) {
     await addDatabase(runtime)
@@ -61,6 +57,7 @@ export default async debug => {
 
   const app = createApp()
   app.logger = logger
+  app.program = await loadProgram(process.cwd())
   app.sumor = runtime
   app.sumor.app = app
   app.use((req, res, next) => {
@@ -85,16 +82,16 @@ export default async debug => {
 
   logger.debug('前置中间件加载完成')
 
-  if (app.sumor.meta.event.setup) {
-    await app.sumor.meta.event.setup.program(app.sumor)
+  if (app.program.event.setup) {
+    await app.program.event.setup.program(app.sumor)
   }
 
   await handler(app)
 
   logger.debug('处理程序加载完成')
 
-  if (app.sumor.meta.event.serve) {
-    await app.sumor.meta.event.serve.program(app.sumor)
+  if (app.program.event.serve) {
+    await app.program.event.serve.program(app.sumor)
   }
 
   await postMiddleware(app)

@@ -1,5 +1,5 @@
 import fse from 'fs-extra'
-import root from '../../../../root.js'
+import root from '../../../root.js'
 
 // const sslString = `https: {
 //             cert: getSSL("./ssl/domain.cer"),

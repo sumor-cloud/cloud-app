@@ -1,5 +1,5 @@
 import database from '@sumor/database'
-import loadConfig from '../../src/config/loadConfig.js'
+import loadConfig from './config/loadConfig.js'
 import Logger from '@sumor/logger'
 
 export default async () => {

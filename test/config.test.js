@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals'
 import loadConfig from '../src/config/loadConfig.js'
-import loadMeta from '../src/config/loadMeta.js'
+import loadProgram from '../src/serve/loadProgram.js'
 const root = `${process.cwd()}/test/demo`
 
 describe('context', () => {
@@ -18,11 +18,20 @@ describe('context', () => {
     expect(config.dark).toBe(true)
     expect(config.database.host).toBe('localhost')
   })
-  it('load meta', async () => {
-    const meta = await loadMeta(root)
-    expect(meta.api['api.plus'].name).toBe('Plus')
-    expect(meta.event.serve).toBeDefined()
-    expect(meta.event.token).toBeDefined()
-    console.log(meta)
+  it('load program', async () => {
+    const program = await loadProgram(root)
+    expect(program.api['api.plus'].name).toBeDefined()
+    expect(program.api['sumor.token'].name).toBeDefined()
+    expect(program.event.serve).toBeDefined()
+    expect(program.event.token).toBeDefined()
+
+    const plus = program.api['api.plus'].program
+    const result = await plus({
+      data: {
+        a: 1,
+        b: 1
+      }
+    })
+    expect(result).toEqual(2)
   })
 })

@@ -3,23 +3,23 @@ import checkData from './checkData.js'
 
 export default async app => {
   // 暴露接口
-  const apiPaths = Object.keys(app.sumor.meta.api)
+  const apiPaths = Object.keys(app.program.api)
   apiPaths.sort((x, y) => (x > y ? 1 : -1))
   for (const path of apiPaths) {
+    const apiInfo = app.program.api[path]
     const route = `/${path.replace(/\./g, '/')}`
     const callback = async function (req, res, next) {
       req.sumor.cors = true
 
       // req.sumor.response.changed = true
 
-      if (app.sumor.meta.event.context) {
-        await app.sumor.meta.event.context.program(req.sumor, req, res)
+      if (app.program.event.context) {
+        await app.program.event.context.app.program(req.sumor, req, res)
       }
 
       try {
-        const meta = app.sumor.meta.api[path]
-        req.sumor.data = checkData(req.sumor.data, meta)
-        const result = await meta.program(req.sumor, req, res)
+        req.sumor.data = checkData(req.sumor.data, apiInfo)
+        const result = await apiInfo.program(req.sumor, req, res)
         req.sumor.response.data = result || req.sumor.response.data
         await req.sumor.db.commit()
       } catch (e) {
@@ -36,7 +36,7 @@ export default async app => {
       next()
     }
 
-    const hasFile = listenApis(path, app, callback)
+    const hasFile = listenApis(path, apiInfo, app, callback)
 
     app.logger.info(`接口已就绪：${route}${hasFile ? ' (允许文件上传)' : ''}`)
   }
