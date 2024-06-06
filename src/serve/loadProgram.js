@@ -1,5 +1,6 @@
 import libRoot from '../../root.js'
 import { meta } from '@sumor/config'
+import { pathToFileURL } from 'url'
 
 export default async root => {
   const api = {}
@@ -12,7 +13,8 @@ export default async root => {
   const convert = async (source, target, prefix) => {
     for (const path in source) {
       const id = path.replace(/\//g, '.')
-      let program = await import(source[path].js)
+      const filePath = source[path].js
+      let program = await import(pathToFileURL(filePath))
       if (program.default) {
         program = program.default
       }

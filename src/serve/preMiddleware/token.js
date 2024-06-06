@@ -1,4 +1,4 @@
-import type from '../../utils/type.js'
+import type from '../type.js'
 
 class Token {
   constructor(req) {

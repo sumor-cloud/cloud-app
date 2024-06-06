@@ -1,5 +1,5 @@
-import WeChat from '../../modules/wechat/index.js'
-import getCache from '../../modules/cache/index.js'
+import WeChat from '../modules/wechat/index.js'
+import getCache from '../modules/cache/index.js'
 
 export default async app => {
   if (app.sumor.config.wechat) {

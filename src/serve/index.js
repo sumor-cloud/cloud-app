@@ -4,15 +4,12 @@ import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
-import loadConfig from '../config/loadConfig.js'
-import appLogger from '../i18n/appLogger.js'
+import appLogger from './i18n/appLogger.js'
 import getRuntime from './getRuntime.js'
-import tools from '../modules/tools/index.js'
+import tools from './modules/tools/index.js'
 import loadProgram from './loadProgram.js'
 
-export default async debug => {
-  // Fetch config and logger
-  const config = await loadConfig(process.cwd())
+export default async (config, debug) => {
   const logger = appLogger(config.logLevel, config.language)
   logger.code('SUMOR_APP_LOGGER_LEVEL', { level: config.logLevel.toUpperCase() })
   logger.code('SUMOR_APP_CONFIG_INFO', { config: JSON.stringify(config, null, 4) })
