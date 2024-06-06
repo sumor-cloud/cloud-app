@@ -7,7 +7,7 @@ import cmdCover from './src/utils/cmdCover.js'
 import setup from './src/setup.js'
 import webServe from './src/web/dev.js'
 import webBuild from './src/web/build.js'
-import serve from './src/serve.js'
+import serve from './src/serve/index.js'
 
 const program = new Command()
 

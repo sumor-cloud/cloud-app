@@ -3,7 +3,7 @@ import multer from 'multer'
 import fse from 'fs-extra'
 
 export default async app => {
-  const uploadPath = `${app.sumor.root}/tmp/uploads`
+  const uploadPath = `${app.sumor.config.root}/tmp/uploads`
   await fse.ensureDir(uploadPath)
   const upload = multer({ dest: 'tmp/uploads/' })
   app.uploader = parameters => {

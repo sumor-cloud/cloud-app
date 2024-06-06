@@ -28,7 +28,7 @@ export default async root => {
 
   for (const route in event) {
     const programFunc = event[route].program
-    event[route].program = async context => {
+    event[route].program = async (context, req, res) => {
       context.logger.trace(`正在执行事件${route}`)
       let newContext = { ...context }
       let standaloneDB
@@ -37,7 +37,7 @@ export default async root => {
         newContext = Object.assign(newContext, { db: standaloneDB })
       }
       try {
-        await programFunc(newContext || context)
+        await programFunc(newContext || context, req, res)
         if (standaloneDB) {
           await standaloneDB.commit()
         }

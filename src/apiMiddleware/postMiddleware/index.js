@@ -10,7 +10,7 @@ export default async app => {
   await fileClearUp(app)
   await sendResponse(app)
   await staticParser(app)
-  if (app.sumor.mode === 'development') {
+  if (app.sumor.config.mode === 'development') {
     const uiOrigin = `http://localhost:${app.sumor.port + 1}`
     app.use(
       '*',
@@ -21,7 +21,7 @@ export default async app => {
       })
     )
   }
-  if (app.sumor.mode === 'production') {
+  if (app.sumor.config.mode !== 'development') {
     await ssrLoader(app)
   }
 }

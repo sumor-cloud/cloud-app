@@ -14,7 +14,7 @@ export default async app => {
       // req.sumor.response.changed = true
 
       if (app.program.event.context) {
-        await app.program.event.context.app.program(req.sumor, req, res)
+        await app.program.event.context.program(req.sumor, req, res)
       }
 
       try {

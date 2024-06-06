@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
-import getRuntime from '../../src/serve/getRuntime.js'
+import getRuntime from '../../src/apiMiddleware/getRuntime.js'
 
 describe('Runtime', () => {
   it('define runtime', () => {

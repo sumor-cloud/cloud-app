@@ -1,6 +1,6 @@
 export default (path, apiInfo, app, callback) => {
   const route = `/${path.replace(/\./g, '/')}`
-  const uploadPath = `${app.sumor.root}/tmp/uploads`
+  const uploadPath = `${app.sumor.config.root}/tmp/uploads`
   const uploadFunction = app.uploader(apiInfo.parameters)
   if (uploadFunction) {
     app.all(

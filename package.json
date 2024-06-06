@@ -18,11 +18,12 @@
     "sca": "cli.js"
   },
   "dependencies": {
+    "@sumor/token-middleware": "^1.0.0",
     "@sumor/config": "^1.2.6",
     "@sumor/database": "^1.2.1",
     "@sumor/error": "^1.0.3",
-    "@sumor/logger": "^1.2.5",
-    "@sumor/ssl-server": "^1.0.21",
+    "@sumor/logger": "^1.2.7",
+    "@sumor/ssl-server": "^1.0.23",
     "@sumor/validator": "^1.0.6",
     "@vitejs/plugin-vue": "^4.2.3",
     "axios": "^1.4.0",

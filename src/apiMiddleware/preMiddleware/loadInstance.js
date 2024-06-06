@@ -1,7 +1,7 @@
 import fse from 'fs-extra'
 
 export default async app => {
-  const path = `${app.sumor.root}/instance.json`
+  const path = `${app.sumor.config.root}/instance.json`
   let instance = {}
   if (await fse.exists(path)) {
     try {

@@ -4,7 +4,7 @@ import serveStatic from 'serve-static'
 import fse from 'fs-extra'
 
 export default async app => {
-  const path = `${app.sumor.root}/static`
+  const path = `${app.sumor.config.root}/static`
 
   // 压缩开放文件
   app.use(
