@@ -5,7 +5,7 @@ import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
 import apiLogger from './i18n/apiMiddlewareLogger.js'
 import getRuntime from './getRuntime.js'
-import loadProgram from './loadProgram.js'
+import loadEvent from './loadEvent.js'
 
 export default async (config, app) => {
   config.root = config.root || process.cwd()
@@ -44,25 +44,10 @@ export default async (config, app) => {
     await addDatabase(runtime)
   }
 
-  app.program = await loadProgram(config.root)
+  app.event = await loadEvent(config.root)
   app.sumor = runtime
   app.sumor.app = app
   app.use((req, res, next) => {
-    const exposeApis = {}
-    const apiPaths = Object.keys(app.program.api)
-    for (const path of apiPaths) {
-      const apiData = app.program.api[path]
-      if (apiData) {
-        const route = `/${path.replace(/\./g, '/')}`
-        exposeApis[route] = {
-          name: apiData.name || '',
-          desc: apiData.desc || '',
-          parameters: apiData.parameters || {}
-        }
-      }
-    }
-    req.exposeApis = exposeApis
-
     req.sumor = runtime.getContext()
     req.sumor.ssrContext = {
       pageInfo: {
@@ -71,7 +56,6 @@ export default async (config, app) => {
         keywords: ''
       }
     }
-    req.sumor.cors = false
     next()
   })
 
@@ -84,16 +68,16 @@ export default async (config, app) => {
 
   logger.debug('前置中间件加载完成')
 
-  if (app.program.event.setup) {
-    await app.program.event.setup.program(app.sumor)
+  if (app.event.setup) {
+    await app.event.setup.program(app.sumor)
   }
 
   await handler(app)
 
   logger.debug('处理程序加载完成')
 
-  if (app.program.event.serve) {
-    await app.program.event.serve.program(app.sumor)
+  if (app.event.serve) {
+    await app.event.serve.program(app.sumor)
   }
 
   await postMiddleware(app)
