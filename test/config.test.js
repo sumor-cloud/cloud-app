@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals'
 import loadConfig from '../src/config/loadConfig.js'
-import loadProgram from '../src/apiMiddleware/loadProgram.js'
+import loadProgram from '../src/serve/api/loadProgram.js'
 const root = `${process.cwd()}/test/demo`
 
 describe('context', () => {

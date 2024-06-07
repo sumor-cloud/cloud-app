@@ -1,5 +1,5 @@
 import loadConfig from '../config/loadConfig.js'
-import apiMiddleware from '../apiMiddleware/index.js'
+import apiHandler from './api/index.js'
 import appLogger from '../i18n/appLogger.js'
 import createApp from '@sumor/ssl-server'
 import tokenMiddleware from '@sumor/token-middleware'
@@ -19,7 +19,7 @@ export default async debug => {
 
   app.use(tokenMiddleware)
 
-  await apiMiddleware(config, app)
+  await apiHandler(config, app)
 
   logger.code('SUMOR_APP_API_MIDDLEWARE_LOADED')
 

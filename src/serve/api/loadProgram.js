@@ -1,4 +1,4 @@
-import libRoot from '../../root.js'
+import libRoot from '../../../root.js'
 import { meta } from '@sumor/config'
 import { pathToFileURL } from 'url'
 
