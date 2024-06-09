@@ -1,32 +1,21 @@
-import listenApis from './listenApis.js'
 import checkData from '../../middleware/checkData.js'
 import libRoot from '../../../../root.js'
 import loadApi from '../../middleware/load.js'
 import exposeApi from '../../middleware/middleware/exposeApi.js'
+import bodyParser from '../../middleware/middleware/bodyParser.js'
 
 export default async app => {
-  const customApi = await loadApi(`${app.sumor.config.root}/api`)
+  const customApi = await loadApi(`${app.sumor.config.root}/api`, '/api')
   const sumorApi = await loadApi(`${libRoot}/template/api`)
-
-  // add api. prefix to custom api
-  const customApiResult = {}
-  for (const i in customApi) {
-    customApiResult[`api.${i}`] = customApi[i]
-  }
-
   const apisMeta = Object.assign({}, customApi, sumorApi)
 
-  // 暴露接口
-  const apiPaths = Object.keys(apisMeta)
-
-  for (const path of apiPaths) {
-    const apiInfo = apisMeta[path]
+  for (const path in apisMeta) {
     const callback = async function (req, res, next) {
       await app.event('context')(req.sumor, req, res)
 
       try {
-        req.sumor.data = checkData(req.sumor.data, apiInfo)
-        const result = await apiInfo.program(req.sumor, req, res)
+        req.sumor.data = checkData(req.sumor.data, apisMeta[path])
+        const result = await apisMeta[path].program(req.sumor, req, res)
         req.sumor.response.data = result || req.sumor.response.data
         await req.sumor.db.commit()
       } catch (e) {
@@ -43,7 +32,18 @@ export default async app => {
       next()
     }
 
-    listenApis(apiInfo, app, [exposeApi(apisMeta), callback])
+    const uploadParameters = []
+    for (const i in apisMeta[path].parameters) {
+      if (apisMeta[path].parameters[i].type === 'file') {
+        uploadParameters.push({ name: i })
+      }
+    }
+
+    app.all(apisMeta[path].route, bodyParser(uploadParameters), (req, res, next) => {
+      req.sumor.data = req.data
+      next()
+    })
+    app.all(apisMeta[path].route, exposeApi(apisMeta), callback)
   }
   app.logger.info('所有接口已就绪')
 }
