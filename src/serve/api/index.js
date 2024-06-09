@@ -6,6 +6,7 @@ import addDatabase from './addDatabase.js'
 import logger from '../i18n/appLogger.js'
 import getRuntime from './getRuntime.js'
 import loadEvent from './loadEvent.js'
+import ssrLoader from './ssrLoader.js'
 
 export default async (config, app) => {
   config.root = config.root || process.cwd()
@@ -57,6 +58,7 @@ export default async (config, app) => {
     }
     next()
   })
+  await ssrLoader(app)
 
   await preMiddleware(app)
 
