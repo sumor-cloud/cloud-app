@@ -22,11 +22,7 @@ export default async app => {
   for (const path of apiPaths) {
     const apiInfo = apisMeta[path]
     const callback = async function (req, res, next) {
-      // req.sumor.response.changed = true
-
-      if (app.event.context) {
-        await app.event.context.program(req.sumor, req, res)
-      }
+      await app.event('context')(req.sumor, req, res)
 
       try {
         req.sumor.data = checkData(req.sumor.data, apiInfo)
@@ -47,7 +43,7 @@ export default async app => {
       next()
     }
 
-    listenApis(path, apiInfo, app, [exposeApi(apisMeta), callback])
+    listenApis(apiInfo, app, [exposeApi(apisMeta), callback])
   }
   app.logger.info('所有接口已就绪')
 }

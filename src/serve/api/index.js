@@ -67,17 +67,13 @@ export default async (config, app) => {
 
   logger.debug('前置中间件加载完成')
 
-  if (app.event.setup) {
-    await app.event.setup.program(app.sumor)
-  }
+  await app.event('setup')(app.sumor)
 
   await handler(app)
 
   logger.debug('处理程序加载完成')
 
-  if (app.event.serve) {
-    await app.event.serve.program(app.sumor)
-  }
+  await app.event('serve')(app.sumor)
 
   await postMiddleware(app)
 }

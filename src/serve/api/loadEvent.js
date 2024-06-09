@@ -1,7 +1,9 @@
 import { meta } from '@sumor/config'
 import { pathToFileURL } from 'url'
+import Logger from '@sumor/logger'
 
 export default async root => {
+  const logger = new Logger()
   const event = {}
 
   const eventMeta = await meta(`${root}/event`, ['js'])
@@ -15,28 +17,23 @@ export default async root => {
     }
     event[id] = eventMeta[path]
     event[id].program = async (context, req, res) => {
-      context.logger.trace(`正在执行事件${id}`)
-      let newContext = { ...context }
-      let standaloneDB
-      if (!context.db) {
-        standaloneDB = await context.connectDB()
-        newContext = Object.assign(newContext, { db: standaloneDB })
-      }
+      logger.info(`正在执行事件${id}`)
       try {
-        await programFunc(newContext || context, req, res)
-        if (standaloneDB) {
-          await standaloneDB.commit()
-        }
-        context.logger.debug(`事件${id}完成`)
+        const result = await programFunc(context, req, res)
+        logger.info(`事件${id}完成`)
+        return result
       } catch (e) {
-        if (standaloneDB) {
-          await standaloneDB.rollback()
-        }
-        context.logger.error(`事件${id}执行失败，${e.message}`)
-        context.logger.trace(e)
+        logger.error(`事件${id}执行失败，${e.message}`)
+        logger.debug(e)
       }
     }
   }
 
-  return event
+  return name => {
+    if (event[name]) {
+      return event[name].program
+    } else {
+      return () => {}
+    }
+  }
 }

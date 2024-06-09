@@ -1,10 +1,9 @@
-export default (path, apiInfo, app, callback) => {
-  const route = `/${path.replace(/\./g, '/')}`
+export default (apiInfo, app, callback) => {
   const uploadPath = `${process.cwd()}/tmp/uploads`
   const uploadFunction = app.uploader(apiInfo.parameters)
   if (uploadFunction) {
     app.all(
-      route,
+      apiInfo.route,
       uploadFunction,
       (req, res, next) => {
         const files = {}
@@ -30,7 +29,7 @@ export default (path, apiInfo, app, callback) => {
     )
   } else {
     app.all(
-      route,
+      apiInfo.route,
       (req, res, next) => {
         next()
       },

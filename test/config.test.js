@@ -22,8 +22,7 @@ describe('context', () => {
     const event = await loadEvent(root)
     // expect(program.api['api.plus'].name).toBeDefined()
     // expect(program.api['sumor.token'].name).toBeDefined()
-    expect(event.serve).toBeDefined()
-    expect(event.token).toBeDefined()
+    expect(await event('serve')()).toBe('OK')
 
     // const plus = program.api['api.plus'].program
     // const result = await plus({
