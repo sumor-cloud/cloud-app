@@ -1,5 +1,5 @@
 import { validate, format } from '@sumor/validator'
-import APIMiddlewareError from '../i18n/APIMiddlewareError.js'
+import APIError from './i18n/APIError.js'
 
 export default (data, apiInfo) => {
   let errors = []
@@ -15,7 +15,7 @@ export default (data, apiInfo) => {
     errors = errors.concat(fieldErrors)
   }
   if (errors.length > 0) {
-    throw new APIMiddlewareError('SUMOR_API_FIELDS_VALIDATION_FAILED', {}, errors)
+    throw new APIError('SUMOR_API_FIELDS_VALIDATION_FAILED', {}, errors)
   }
   return data
 }

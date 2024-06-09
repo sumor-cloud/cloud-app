@@ -3,13 +3,12 @@ import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
-import apiLogger from './i18n/apiMiddlewareLogger.js'
+import logger from '../i18n/appLogger.js'
 import getRuntime from './getRuntime.js'
 import loadEvent from './loadEvent.js'
 
 export default async (config, app) => {
   config.root = config.root || process.cwd()
-  const logger = apiLogger(config.logLevel, config.language)
 
   // Fetch runtime
   const runtime = getRuntime()

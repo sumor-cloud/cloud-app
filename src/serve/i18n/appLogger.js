@@ -27,11 +27,8 @@ const i18n = {
     SUMOR_APP_RUNNING: '应用正在运行于 {origin}'
   }
 }
-export default (level, language) =>
-  new Logger({
-    scope: 'APP',
-    level,
-    language,
-    code,
-    i18n
-  })
+export default new Logger({
+  scope: 'APP',
+  code,
+  i18n
+})

@@ -1,33 +1,27 @@
 import listenApis from './listenApis.js'
-import checkData from './checkData.js'
-import loadApi from './loadApi.js'
+import checkData from '../../middleware/checkData.js'
+import libRoot from '../../../../root.js'
+import loadApi from '../../middleware/load.js'
+import exposeApi from '../../middleware/middleware/exposeApi.js'
 
 export default async app => {
-  const apisMeta = await loadApi(app.sumor.config.root)
+  const customApi = await loadApi(`${app.sumor.config.root}/api`)
+  const sumorApi = await loadApi(`${libRoot}/template/api`)
+
+  // add api. prefix to custom api
+  const customApiResult = {}
+  for (const i in customApi) {
+    customApiResult[`api.${i}`] = customApi[i]
+  }
+
+  const apisMeta = Object.assign({}, customApi, sumorApi)
 
   // 暴露接口
   const apiPaths = Object.keys(apisMeta)
-  apiPaths.sort((x, y) => (x > y ? 1 : -1))
-
-  const exposeApis = {}
-  for (const path of apiPaths) {
-    const apiData = apisMeta[path]
-    if (apiData) {
-      const route = `/${path.replace(/\./g, '/')}`
-      exposeApis[route] = {
-        name: apiData.name || '',
-        desc: apiData.desc || '',
-        parameters: apiData.parameters || {}
-      }
-    }
-  }
 
   for (const path of apiPaths) {
     const apiInfo = apisMeta[path]
-    const route = `/${path.replace(/\./g, '/')}`
     const callback = async function (req, res, next) {
-      req.exposeApis = exposeApis
-
       // req.sumor.response.changed = true
 
       if (app.event.context) {
@@ -53,9 +47,7 @@ export default async app => {
       next()
     }
 
-    const hasFile = listenApis(path, apiInfo, app, callback)
-
-    app.logger.info(`接口已就绪：${route}${hasFile ? ' (允许文件上传)' : ''}`)
+    listenApis(path, apiInfo, app, [exposeApi(apisMeta), callback])
   }
   app.logger.info('所有接口已就绪')
 }

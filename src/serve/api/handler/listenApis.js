@@ -1,6 +1,6 @@
 export default (path, apiInfo, app, callback) => {
   const route = `/${path.replace(/\./g, '/')}`
-  const uploadPath = `${app.sumor.config.root}/tmp/uploads`
+  const uploadPath = `${process.cwd()}/tmp/uploads`
   const uploadFunction = app.uploader(apiInfo.parameters)
   if (uploadFunction) {
     app.all(
@@ -26,7 +26,7 @@ export default (path, apiInfo, app, callback) => {
         req.sumor.data = { ...req.params, ...req.query, ...req.body, ...files }
         next()
       },
-      callback
+      ...callback
     )
   } else {
     app.all(
@@ -34,8 +34,7 @@ export default (path, apiInfo, app, callback) => {
       (req, res, next) => {
         next()
       },
-      callback
+      ...callback
     )
   }
-  return !!uploadFunction
 }

@@ -1,6 +1,6 @@
 import defineError from '@sumor/error'
 
-const APIMiddlewareError = defineError({
+const APIError = defineError({
   code: {
     SUMOR_API_FIELDS_VALIDATION_FAILED: 'API fields validation failed'
   },
@@ -39,4 +39,4 @@ const APIMiddlewareError = defineError({
   }
 })
 
-export default APIMiddlewareError
+export default APIError

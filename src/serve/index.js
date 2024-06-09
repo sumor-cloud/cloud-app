@@ -1,6 +1,6 @@
 import loadConfig from '../config/loadConfig.js'
 import apiHandler from './api/index.js'
-import appLogger from '../i18n/appLogger.js'
+import logger from './i18n/appLogger.js'
 import createApp from '@sumor/ssl-server'
 import tokenMiddleware from '@sumor/token-middleware'
 
@@ -9,7 +9,6 @@ export default async debug => {
   if (debug) {
     config.mode = 'development'
   }
-  const logger = appLogger(config.logLevel, config.language)
   logger.code('SUMOR_APP_LOGGER_LEVEL', { level: config.logLevel.toUpperCase() })
   logger.code('SUMOR_APP_CONFIG_INFO', { config: JSON.stringify(config, null, 4) })
   logger.code('SUMOR_APP_ORIGIN_LANGUAGE', { language: config.language })
