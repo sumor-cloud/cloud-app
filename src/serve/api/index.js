@@ -1,5 +1,4 @@
 import preMiddleware from './preMiddleware/index.js'
-import handler from './handler/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
@@ -7,6 +6,8 @@ import logger from '../i18n/appLogger.js'
 import getRuntime from './getRuntime.js'
 import loadEvent from './loadEvent.js'
 import ssrLoader from './ssrLoader.js'
+import handleApi from './handler/handleApi.js'
+import libRoot from '../../../root.js'
 
 export default async (config, app) => {
   config.root = config.root || process.cwd()
@@ -71,7 +72,12 @@ export default async (config, app) => {
 
   await app.event('setup')(app.sumor)
 
-  await handler(app)
+  const prepare = async (req, res) => {
+    await app.event('context')(req.sumor, req, res)
+  }
+  await handleApi(app, `${app.sumor.config.root}/api`, { prefix: '/api', prepare })
+  await handleApi(app, `${libRoot}/template/api`, { prepare })
+  app.logger.info('所有接口已就绪')
 
   logger.debug('处理程序加载完成')
 
