@@ -1,11 +1,11 @@
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import fileClearUp from './fileClearUp.js'
+import fileClearUp from '../../middleware/middleware/fileClearUp.js'
 import sendResponse from './sendResponse.js'
 import ssrLoader from './ssrLoader.js'
 import staticParser from './staticParser.js'
 
 export default async app => {
-  await fileClearUp(app)
+  app.use(fileClearUp)
   await sendResponse(app)
   await staticParser(app)
   if (app.sumor.config.mode === 'development') {
