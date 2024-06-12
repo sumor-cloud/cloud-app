@@ -1,25 +1,24 @@
 import Logger from '@sumor/logger'
+
 let requestSequence = 0
 
 export default app => {
   app.use((req, res, next) => {
-    const current = ++requestSequence
-    req.sumor.loggerId = current
+    req.sumor.loggerId = ++requestSequence
 
     req.sumor.ip = req.headers['x-forwarded-for'] || '0.0.0.0'
 
-    req.sumor.getLogger = scope => {
-      return new Logger({
-        scope,
-        id: current
-      })
-    }
+    req.sumor.logger = new Logger({
+      scope: 'PROGRAM',
+      id: req.sumor.loggerId
+    })
 
-    req.sumor.logger = req.sumor.getLogger('PROGRAM')
-
-    const logger = req.sumor.getLogger('HTTP')
+    const httpLogger = new Logger({
+      scope: 'HTTP',
+      id: req.sumor.loggerId
+    })
     const agent = req.headers['user-agent'] || 'unknown agent'
-    logger.info(`${req.method} ${req.originalUrl} IP/${req.sumor.ip} ${agent}`)
+    httpLogger.info(`${req.method} ${req.originalUrl} IP/${req.sumor.ip} ${agent}`)
 
     next()
   })

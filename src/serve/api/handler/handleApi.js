@@ -1,49 +1,70 @@
 import loadApi from '../../middleware/load.js'
 import bodyParser from '../../middleware/middleware/bodyParser.js'
 import checkData from '../../middleware/checkData.js'
+import fileClearUp from '../../middleware/middleware/fileClearUp.js'
+import Response from './Response.js'
 
 const exposeApis = {}
 
 export default async (app, path, options) => {
   options = options || {}
   options.prepare = options.prepare || function () {}
+  options.finalize = options.finalize || function () {}
+  options.exception = options.exception || function () {}
 
   const apisMeta = await loadApi(path, options.prefix)
 
   for (const path in apisMeta) {
+    // add exposeApi to global object
     exposeApis[apisMeta[path].route] = {
       name: apisMeta[path].name,
       desc: apisMeta[path].desc,
       parameters: apisMeta[path].parameters
     }
 
-    app.all(apisMeta[path].route, bodyParser(apisMeta[path].parameters), (req, res, next) => {
-      req.sumor.data = req.data
+    const middlewares = bodyParser(apisMeta[path].parameters)
+
+    middlewares.push((req, res, next) => {
+      req.sumor.response = new Response(req, res)
       next()
     })
 
-    app.all(apisMeta[path].route, async function (req, res, next) {
+    middlewares.push(async function (req, res, next) {
       req.exposeApis = exposeApis
+      next()
+    })
 
-      await options.prepare(req, res)
-
+    middlewares.push(async function (req, res, next) {
       try {
-        req.sumor.data = checkData(req.sumor.data, apisMeta[path])
+        await options.prepare(req, res)
+
+        req.sumor.data = checkData(req.data, apisMeta[path].parameters)
         const result = await apisMeta[path].program(req.sumor, req, res)
         req.sumor.response.data = result || req.sumor.response.data
-        await req.sumor.db.commit()
+
+        await options.finalize(req, res)
       } catch (e) {
-        try {
-          await req.sumor.db.rollback()
-        } catch (e) {
-          // todo raise error for db connection
-        }
-        req.sumor.logger.trace(e)
+        await options.exception(req, res)
+
+        req.sumor.logger.trace('API error: ', e)
         e.language = req.sumor.language
         req.sumor.response.error(e)
       }
-
       next()
     })
+
+    middlewares.push(fileClearUp)
+
+    middlewares.push((req, res, next) => {
+      if (req.sumor.response.respond) {
+        req.sumor.response.end()
+      } else if (req.sumor.response.changed) {
+        req.sumor.response.send()
+      } else {
+        next()
+      }
+    })
+
+    app.all(apisMeta[path].route, ...middlewares)
   }
 }

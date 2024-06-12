@@ -4,12 +4,10 @@ import timezone from './timezone.js'
 import logger from './logger.js'
 import cache from './cache.js'
 import database from './database.js'
-import loadResponse from './loadResponse.js'
 import wechat from './wechat.js'
 
 export default async app => {
   await loadInstance(app)
-  await loadResponse(app)
   await language(app)
   await timezone(app)
   await logger(app)

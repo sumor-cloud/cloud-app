@@ -1,6 +1,5 @@
 import preMiddleware from './preMiddleware/index.js'
 import postMiddleware from './postMiddleware/index.js'
-import Logger from '@sumor/logger'
 import addDatabase from './addDatabase.js'
 import logger from '../i18n/appLogger.js'
 import getRuntime from './getRuntime.js'
@@ -24,20 +23,6 @@ export default async (config, app) => {
     domain: config.domain,
     port: config.port,
     origin: config.origin
-  })
-
-  // 准备额外参数
-  const getLogger = (scope, id) =>
-    new Logger({
-      scope,
-      level: runtime.config.logLevel,
-      language: runtime.config.language,
-      id
-    })
-
-  runtime.setContext({
-    getLogger,
-    logger: getLogger('RUNTIME')
   })
 
   // Add database
@@ -70,13 +55,27 @@ export default async (config, app) => {
 
   logger.debug('前置中间件加载完成')
 
-  await app.event('setup')(app.sumor)
-
   const prepare = async (req, res) => {
     await app.event('context')(req.sumor, req, res)
   }
-  await handleApi(app, `${app.sumor.config.root}/api`, { prefix: '/api', prepare })
-  await handleApi(app, `${libRoot}/template/api`, { prepare })
+  const finalize = async (req, res) => {
+    await req.sumor.db.commit()
+  }
+  const exception = async (req, res) => {
+    try {
+      await req.sumor.db.rollback()
+    } catch (e) {
+      req.sumor.logger.error('数据库回滚失败', e)
+    }
+  }
+
+  await handleApi(app, `${app.sumor.config.root}/api`, {
+    prefix: '/api',
+    prepare,
+    finalize,
+    exception
+  })
+  await handleApi(app, `${libRoot}/template/api`, { prepare, finalize, exception })
   app.logger.info('所有接口已就绪')
 
   logger.debug('处理程序加载完成')

@@ -103,7 +103,7 @@ class Response {
   }
 
   get data() {
-    return this._data
+    return this._response.data
   }
 
   error(error) {
@@ -163,9 +163,4 @@ class Response {
   }
 }
 
-export default async app => {
-  app.use((req, res, next) => {
-    req.sumor.response = new Response(req, res)
-    next()
-  })
-}
+export default Response
