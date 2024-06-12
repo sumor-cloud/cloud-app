@@ -48,11 +48,6 @@ export default async (config, app) => {
 
   await preMiddleware(app)
 
-  app.use((req, res, next) => {
-    req.sumor.logger.trace(`会话交互对象: ${Object.keys(req.sumor).join(', ')}`)
-    next()
-  })
-
   logger.debug('前置中间件加载完成')
 
   const prepare = async (req, res) => {
@@ -65,7 +60,7 @@ export default async (config, app) => {
     try {
       await req.sumor.db.rollback()
     } catch (e) {
-      req.sumor.logger.error('数据库回滚失败', e)
+      req.logger.error('数据库回滚失败', e)
     }
   }
 

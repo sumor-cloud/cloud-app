@@ -2,6 +2,7 @@ import loadApi from '../../middleware/load.js'
 import bodyParser from '../../middleware/middleware/bodyParser.js'
 import checkData from '../../middleware/checkData.js'
 import fileClearUp from '../../middleware/middleware/fileClearUp.js'
+import clientEnv from '../../middleware/middleware/clientEnv.js'
 import Response from './Response.js'
 
 const exposeApis = {}
@@ -24,6 +25,8 @@ export default async (app, path, options) => {
 
     const middlewares = bodyParser(apisMeta[path].parameters)
 
+    middlewares.push(clientEnv)
+
     middlewares.push((req, res, next) => {
       req.sumor.response = new Response(req, res)
       next()
@@ -38,6 +41,7 @@ export default async (app, path, options) => {
       try {
         await options.prepare(req, res)
 
+        req.sumor.logger = req.logger
         req.sumor.data = checkData(req.data, apisMeta[path].parameters)
         const result = await apisMeta[path].program(req.sumor, req, res)
         req.sumor.response.data = result || req.sumor.response.data
@@ -46,8 +50,8 @@ export default async (app, path, options) => {
       } catch (e) {
         await options.exception(req, res)
 
-        req.sumor.logger.trace('API error: ', e)
-        e.language = req.sumor.language
+        req.logger.trace('API error: ', e)
+        e.language = req.client.language
         req.sumor.response.error(e)
       }
       next()

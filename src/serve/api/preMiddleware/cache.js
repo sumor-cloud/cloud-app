@@ -7,7 +7,7 @@ export default async app => {
   app.sumor.cache = cache()
 
   app.use(async (req, res, next) => {
-    req.sumor.cache = cache(req.sumor.loggerId)
+    req.sumor.cache = cache(req.client.id)
     next()
   })
 }
