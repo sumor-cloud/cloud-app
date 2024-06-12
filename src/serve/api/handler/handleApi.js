@@ -51,7 +51,6 @@ export default async (app, path, options) => {
         await options.exception(req, res)
 
         req.logger.trace('API error: ', e)
-        e.language = req.client.language
         req.sumor.response.error(e)
       }
       next()
