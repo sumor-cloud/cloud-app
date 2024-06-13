@@ -1,16 +1,4 @@
-export default ({ title, code, message, errors }) => {
-  let errorsHtml = ''
-  if (errors && errors.length > 0) {
-    const dataString = JSON.stringify(errors, null, 4)
-    errorsHtml = `<div class="detailBox">
-    <pre>${dataString}</pre>
-    <div class="detailMessage">请将该技术信息提供给应用管理员</div>
-</div>`
-  }
-  return `<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<style type="text/css">
+const style = `<style type="text/css">
 html{
     background: #273343;
     color: #fff;
@@ -56,7 +44,31 @@ pre{
     margin: 0 auto;
     margin-top: 5px;
 }
-</style>
+</style>`
+
+const script = `<script>
+function show(){
+    var oDiv = document.getElementsByTagName('div')[3];
+    oDiv.classList.add('show')
+    var oPre = document.getElementsByTagName('div')[4];
+    oPre.classList.add('show');
+}
+</script>`
+
+export default ({ title, code, message, errors }) => {
+  let errorsHtml = ''
+  if (errors && errors.length > 0) {
+    const dataString = JSON.stringify(errors, null, 4)
+    errorsHtml = `<div class="detailBox">
+    <pre>${dataString}</pre>
+    <div class="detailMessage">请将该技术信息提供给应用管理员</div>
+</div>`
+  }
+
+  return `<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+${style}
 </head>
 <body>
 <h1>${title}</h1>
@@ -65,14 +77,7 @@ pre{
 <div class="content">${message}</div>
 <div class="title showDetail" onclick="show()">点击查看详细错误信息</div>
 ${errorsHtml}
-<script>
-function show(){
-    var oDiv = document.getElementsByTagName('div')[3];
-    oDiv.classList.add('show')
-    var oPre = document.getElementsByTagName('div')[4];
-    oPre.classList.add('show');
-}
-</script>
+${script}
 </body>
 </html>`
 }
