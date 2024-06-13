@@ -1,6 +1,9 @@
 export default async app => {
   app.use(async (req, res, next) => {
-    req.db = await app.connectDB(req.client.id)
+    req.connectDB = async () => {
+      return await app.connectDB(req.client.id)
+    }
+    req.db = await req.connectDB()
     next()
   })
 }
