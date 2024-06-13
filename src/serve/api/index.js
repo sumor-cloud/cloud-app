@@ -32,15 +32,23 @@ export default async app => {
 
   const prepare = async (req, res) => {
     await app.event('context')(req, res)
+
+    if (req.db && req.token.user) {
+      req.db.setUser(req.token.user)
+    }
   }
   const finalize = async (req, res) => {
-    await req.db.commit()
+    if (req.db) {
+      await req.db.commit()
+    }
   }
   const exception = async (req, res) => {
-    try {
-      await req.db.rollback()
-    } catch (e) {
-      req.logger.error('数据库回滚失败', e)
+    if (req.db) {
+      try {
+        await req.db.rollback()
+      } catch (e) {
+        req.logger.error('数据库回滚失败', e)
+      }
     }
   }
 
