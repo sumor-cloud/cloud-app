@@ -4,7 +4,7 @@ import addDatabase from './addDatabase.js'
 import logger from '../i18n/appLogger.js'
 import loadEvent from './loadEvent.js'
 import ssrLoader from './ssrLoader.js'
-import handleApi from '../middleware/index.js'
+import apiMiddleware from '@sumor/api-middleware'
 import libRoot from '../../../root.js'
 
 export default async app => {
@@ -52,13 +52,13 @@ export default async app => {
     }
   }
 
-  await handleApi(app, `${app.config.root}/api`, {
+  await apiMiddleware(app, `${app.config.root}/api`, {
     prefix: '/api',
     prepare,
     finalize,
     exception
   })
-  await handleApi(app, `${libRoot}/template/api`, { prepare, finalize, exception })
+  await apiMiddleware(app, `${libRoot}/template/api`, { prepare, finalize, exception })
   app.logger.info('所有接口已就绪')
 
   logger.debug('处理程序加载完成')

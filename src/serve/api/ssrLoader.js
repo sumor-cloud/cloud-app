@@ -1,6 +1,6 @@
 import { meta } from '@sumor/config'
 import database from '@sumor/database'
-import bodyParser from '../middleware/middleware/bodyParser.js'
+import bodyParser from './bodyParser.js'
 
 export default async app => {
   const ssrMeta = await meta(`${process.cwd()}/ssr`, ['js'])
