@@ -15,10 +15,16 @@ export default async debug => {
 
   const app = createApp()
   app.logger = logger
+  app.config = config
+
+  app.use((req, res, next) => {
+    req.config = config
+    next()
+  })
 
   app.use(tokenMiddleware)
 
-  await apiHandler(config, app)
+  await apiHandler(app)
 
   logger.code('SUMOR_APP_API_MIDDLEWARE_LOADED')
 

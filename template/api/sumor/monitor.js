@@ -50,7 +50,7 @@ const update = async () => {
 }
 
 let timer
-export default async (context, req, res) => {
+export default async () => {
   if (!timer) {
     update()
     setInterval(() => {

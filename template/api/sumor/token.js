@@ -1,5 +1,4 @@
-export default (context, req, res, next) => {
-  const token = req.token
+export default ({ token }) => {
   if (token.id) {
     const nickname = token.data ? token.data.nickname : ''
     return {

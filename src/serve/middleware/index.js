@@ -1,11 +1,11 @@
-import loadApi from '../../middleware/load.js'
-import bodyParser from '../../middleware/middleware/bodyParser.js'
-import checkData from '../../middleware/checkData.js'
-import fileClearUp from '../../middleware/middleware/fileClearUp.js'
-import clientEnv from '../../middleware/middleware/clientEnv.js'
-import errorCatcher from '../../middleware/errorCatcher.js'
-import Response from './Response.js'
-import errorMiddleware from '../../middleware/error/errorMiddleware.js'
+import loadApi from './load.js'
+import bodyParser from './middleware/bodyParser.js'
+import checkData from './checkData.js'
+import fileClearUp from './fileClearUp.js'
+import clientEnv from './middleware/clientEnv.js'
+import errorCatcher from './error/errorCatcher.js'
+import errorMiddleware from './error/errorMiddleware.js'
+import sendResponse from './sendResponse.js'
 
 const exposeApis = {}
 
@@ -29,11 +29,6 @@ export default async (app, path, options) => {
 
     middlewares.push(clientEnv)
 
-    middlewares.push((req, res, next) => {
-      req.sumor.response = new Response(req, res)
-      next()
-    })
-
     middlewares.push(async function (req, res, next) {
       req.exposeApis = exposeApis
       next()
@@ -42,19 +37,14 @@ export default async (app, path, options) => {
     middlewares.push(async function (req, res, next) {
       await options.prepare(req, res)
 
-      req.sumor.logger = req.logger
-      req.sumor.data = checkData(req.data, apisMeta[path].parameters)
-      const result = await apisMeta[path].program(req.sumor, req, res)
-      req.sumor.response.data = result || req.sumor.response.data
+      req.data = checkData(req.data, apisMeta[path].parameters)
+      const response = await apisMeta[path].program(req, res)
 
       await options.finalize(req, res)
-      next()
-    })
 
-    middlewares.push(fileClearUp)
+      await fileClearUp(req)
 
-    middlewares.push((req, res, next) => {
-      req.sumor.response.send()
+      sendResponse(res, response)
     })
 
     middlewares = middlewares.map(errorCatcher)

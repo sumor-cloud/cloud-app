@@ -32,7 +32,7 @@ export default async app => {
     app.use('*', async (req, res) => {
       try {
         const url = req.originalUrl.replace(exposeRoot, '/')
-        const ctx = req.sumor.ssrContext
+        const ctx = req.ssrContext
         const [appHtml, preloadLinks] = await ssrServerEntry(url, manifest, ctx)
 
         const pageInfo = `<title>${ctx.pageInfo.title}</title>

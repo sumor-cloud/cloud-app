@@ -1,7 +1,7 @@
-export default async (context, req, res) => {
+export default async ({ config, instance, exposeApis }) => {
   return {
-    name: context.name,
-    instance: context.instance,
-    api: req.exposeApis
+    name: config.name,
+    instance,
+    api: exposeApis
   }
 }

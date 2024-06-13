@@ -4,8 +4,8 @@ import staticParser from './staticParser.js'
 
 export default async app => {
   await staticParser(app)
-  if (app.sumor.config.mode === 'development') {
-    const uiOrigin = `http://localhost:${app.sumor.port + 1}`
+  if (app.config.mode === 'development') {
+    const uiOrigin = `http://localhost:${app.config.port + 1}`
     app.use(
       '*',
       createProxyMiddleware({

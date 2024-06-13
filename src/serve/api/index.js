@@ -2,40 +2,20 @@ import preMiddleware from './preMiddleware/index.js'
 import postMiddleware from './postMiddleware/index.js'
 import addDatabase from './addDatabase.js'
 import logger from '../i18n/appLogger.js'
-import getRuntime from './getRuntime.js'
 import loadEvent from './loadEvent.js'
 import ssrLoader from './ssrLoader.js'
-import handleApi from './handler/handleApi.js'
+import handleApi from '../middleware/index.js'
 import libRoot from '../../../root.js'
 
-export default async (config, app) => {
-  config.root = config.root || process.cwd()
-
-  // Fetch runtime
-  const runtime = getRuntime()
-
-  // Prepare runtime context
-  runtime.setContext({
-    config,
-    name: config.name,
-    logLevel: config.logLevel,
-    language: config.language,
-    domain: config.domain,
-    port: config.port,
-    origin: config.origin
-  })
-
+export default async app => {
   // Add database
-  if (runtime.config.database) {
-    await addDatabase(runtime)
+  if (app.config.database) {
+    await addDatabase(app)
   }
 
-  app.event = await loadEvent(config.root)
-  app.sumor = runtime
-  app.sumor.app = app
+  app.event = await loadEvent(app.config.root)
   app.use((req, res, next) => {
-    req.sumor = runtime.getContext()
-    req.sumor.ssrContext = {
+    req.ssrContext = {
       pageInfo: {
         title: '',
         description: '',
@@ -51,20 +31,20 @@ export default async (config, app) => {
   logger.debug('前置中间件加载完成')
 
   const prepare = async (req, res) => {
-    await app.event('context')(req.sumor, req, res)
+    await app.event('context')(req, res)
   }
   const finalize = async (req, res) => {
-    await req.sumor.db.commit()
+    await req.db.commit()
   }
   const exception = async (req, res) => {
     try {
-      await req.sumor.db.rollback()
+      await req.db.rollback()
     } catch (e) {
       req.logger.error('数据库回滚失败', e)
     }
   }
 
-  await handleApi(app, `${app.sumor.config.root}/api`, {
+  await handleApi(app, `${app.config.root}/api`, {
     prefix: '/api',
     prepare,
     finalize,
@@ -75,7 +55,7 @@ export default async (config, app) => {
 
   logger.debug('处理程序加载完成')
 
-  await app.event('serve')(app.sumor)
+  await app.event('serve')(app)
 
   await postMiddleware(app)
 }

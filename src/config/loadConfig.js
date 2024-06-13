@@ -5,6 +5,7 @@ export default async root => {
   const dynConfig = await load(`${root}/config`, 'config')
 
   const config = { ...staticConfig, ...dynConfig }
+  config.root = config.root || process.cwd()
   config.name = config.name || 'Sumor Cloud App'
   config.logLevel = (config.logLevel || 'info').toLowerCase()
   config.port = parseInt(config.port || '443', 10)

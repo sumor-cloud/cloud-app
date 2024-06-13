@@ -10,13 +10,13 @@ export default async app => {
     for (const route of metaInfo.routes) {
       app.get(route, bodyParser())
       app.get(route, async function (req, res, next) {
-        const client = await database.client(app.sumor.config.database)
+        const client = await database.client(app.config.database)
         const context = {
           data: req.data,
           db: await client.connect()
         }
         const program = await import(metaInfo.js)
-        req.sumor.ssrContext.data = await program.default(context, req, res)
+        req.ssrContext.data = await program.default(context, req, res)
         next()
       })
     }
