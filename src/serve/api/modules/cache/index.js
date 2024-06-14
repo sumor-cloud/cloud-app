@@ -45,7 +45,11 @@ export default async config => {
         const db = await client.connect(loggerId)
         try {
           if (value) {
-            await db.modify('cache', ['namespace', 'key'], { namespace, key, value })
+            await db.modify('cache', ['namespace', 'key'], {
+              namespace,
+              key,
+              value
+            })
           } else {
             await db.delete('cache', { namespace, key })
           }

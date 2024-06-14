@@ -58,7 +58,11 @@ export default async app => {
     finalize,
     exception
   })
-  await apiMiddleware(app, `${libRoot}/template/api`, { prepare, finalize, exception })
+  await apiMiddleware(app, `${libRoot}/template/api`, {
+    prepare,
+    finalize,
+    exception
+  })
   app.logger.info('所有接口已就绪')
 
   logger.debug('处理程序加载完成')

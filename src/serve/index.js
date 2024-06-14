@@ -9,8 +9,12 @@ export default async debug => {
   if (debug) {
     config.mode = 'development'
   }
-  logger.code('SUMOR_APP_LOGGER_LEVEL', { level: config.logLevel.toUpperCase() })
-  logger.code('SUMOR_APP_CONFIG_INFO', { config: JSON.stringify(config, null, 4) })
+  logger.code('SUMOR_APP_LOGGER_LEVEL', {
+    level: config.logLevel.toUpperCase()
+  })
+  logger.code('SUMOR_APP_CONFIG_INFO', {
+    config: JSON.stringify(config, null, 4)
+  })
   logger.code('SUMOR_APP_ORIGIN_LANGUAGE', { language: config.language })
 
   const app = createApp()
