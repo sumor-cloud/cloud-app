@@ -1,6 +1,7 @@
 import { meta } from '@sumor/config'
 import database from '@sumor/database'
 import bodyParser from './bodyParser.js'
+import { pathToFileURL } from 'url'
 
 export default async app => {
   const ssrMeta = await meta(`${process.cwd()}/ssr`, ['js'])
@@ -15,8 +16,16 @@ export default async app => {
           data: req.data,
           db: await client.connect()
         }
-        const program = await import(metaInfo.js)
-        req.ssrContext.data = await program.default(context, req, res)
+        let program
+        try {
+          program = await import(pathToFileURL(metaInfo.js))
+          program = program.default
+        } catch (e) {
+          app.logger.error('ssr file load failed', e)
+        }
+        if (program) {
+          req.ssrContext.data = await program(context, req, res)
+        }
         next()
       })
     }
