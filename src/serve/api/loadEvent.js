@@ -17,10 +17,10 @@ export default async root => {
     }
     event[id] = eventMeta[path]
     event[id].program = async (context, req, res) => {
-      logger.info(`正在执行事件${id}`)
+      logger.debug(`正在执行事件${id}`)
       try {
         const result = await programFunc(context, req, res)
-        logger.info(`事件${id}完成`)
+        logger.debug(`事件${id}完成`)
         return result
       } catch (e) {
         logger.error(`事件${id}执行失败，${e.message}`)

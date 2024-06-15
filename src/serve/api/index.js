@@ -31,6 +31,11 @@ export default async app => {
   logger.debug('前置中间件加载完成')
 
   const prepare = async (req, res) => {
+    req.connectDB = async () => {
+      return await app.connectDB(req.client.id)
+    }
+    req.db = await req.connectDB()
+
     await app.event('context')(req, res)
 
     if (req.db && req.token.user) {
