@@ -1,7 +1,7 @@
 {
   "name": "@sumor/cloud-app",
   "description": "Sumor Cloud App Framework for Node.js",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "license": "MIT",
   "repository": "sumor-cloud/cloud-app",
   "author": "Sumor Cloud Ltd",
