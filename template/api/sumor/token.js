@@ -1,12 +1,17 @@
 export default ({ token }) => {
   if (token.id) {
-    const nickname = token.data ? token.data.nickname : ''
     return {
       id: token.id,
       user: token.user,
-      nickname,
-      permission: token.permission
+      permission: token.permission || {},
+      data: token.data || {}
+    }
+  } else {
+    return {
+      id: null,
+      user: null,
+      permission: {},
+      data: {}
     }
   }
-  return {}
 }
