@@ -24,7 +24,7 @@
     "@sumor/database": "^1.4.5",
     "@sumor/error": "^1.0.6",
     "@sumor/logger": "^1.2.8",
-    "@sumor/ssl-server": "^1.0.24",
+    "@sumor/ssl-server": "^1.1.1",
     "@sumor/validator": "^1.2.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "axios": "^1.4.0",

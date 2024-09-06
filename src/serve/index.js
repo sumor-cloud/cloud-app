@@ -32,7 +32,12 @@ export default async debug => {
 
   logger.code('SUMOR_APP_API_MIDDLEWARE_LOADED')
 
-  const close = await app.listen(config.port)
+  let close
+  if (config.protocol === 'http') {
+    close = await app.listen(null, config.port)
+  } else {
+    close = await app.listen(config.port)
+  }
 
   logger.code('SUMOR_APP_RUNNING', { origin: config.origin })
 
