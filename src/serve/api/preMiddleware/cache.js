@@ -1,13 +1,14 @@
 import getCache from '../modules/cache/index.js'
 
 export default async app => {
-  const config = app.config.cache || {}
-  const cache = await getCache(config)
+  if (app.config.cache) {
+    const cache = await getCache(app.config.cache)
 
-  app.cache = cache()
+    app.cache = cache()
 
-  app.use(async (req, res, next) => {
-    req.cache = cache(req.client.id)
-    next()
-  })
+    app.use(async (req, res, next) => {
+      req.cache = cache(req.client.id)
+      next()
+    })
+  }
 }
